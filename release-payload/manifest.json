@@ -1,0 +1,45 @@
+{
+  "filename": "Roblox-Manager-3.7.2.3-win-x64.zip",
+  "tag": "v3.7.2.3-roblox-manager-test",
+  "bytes": 129459659,
+  "sha256": "F67FB54F48D433EB052DC79CB75CCAD905A20E45FDE018C304EAD56EA3B33085",
+  "parts": [
+    {
+      "name": "binary.part00",
+      "sha256": "A36FB50E2F91011FAB79FAAFD41A010A5E5319C6F5859A7DB91984C382698EC2"
+    },
+    {
+      "name": "binary.part01",
+      "sha256": "EACA190A470582DF13BD929983DD05526B1AD0B75502410FDF4B05FB8AE58ED2"
+    },
+    {
+      "name": "binary.part02",
+      "sha256": "2419AC6F09114BE32E7C14C337609C00B692B0E852E1A0E5002F707F13FE5CFD"
+    },
+    {
+      "name": "binary.part03",
+      "sha256": "2CA204C620C58BBD62877309173CC3FE313B31560D6E0340FC4775909CEE6043"
+    },
+    {
+      "name": "binary.part04",
+      "sha256": "B5792DE34EB3D038B92BFDDA984A66A289B81E6487B17DA795894FAE0CED6A83"
+    },
+    {
+      "name": "binary.part05",
+      "sha256": "BA2358D8C9F8E4F11C6E5902C33F7BC5BF7E68F39E29D7082A64CEAF4B99922D"
+    },
+    {
+      "name": "binary.part06",
+      "sha256": "00E9829CA7D4C156F1A8009FF2D61CB81C4C9DF0E89BE453287AA2751BA0ED11"
+    },
+    {
+      "name": "binary.part07",
+      "sha256": "D7469259A3E8DFE0512AB8F92538459600A36B95624DD427D0E87080242E7FFC"
+    }
+  ],
+  "extra_assets": [
+    "Roblox-Manager-3.7.2.3-source.zip",
+    "Roblox-Manager-3.7.2.3-win-x64.zip.sha256",
+    "Roblox-Manager-3.7.2.3-source.zip.sha256"
+  ]
+}
