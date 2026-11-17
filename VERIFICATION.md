@@ -29,3 +29,7 @@ PowerShell 7.4.6 on Linux parsed the install helper, Windows build script and pa
 The GUI smoke attempt on Wine/Mono stopped at `System.Drawing.Bitmap.MakeTransparent` / `ToolStripScrollButton` with GDI+ InvalidParameter. It was not counted as successful GUI testing. No Windows-native UI, account sign-in, real Roblox launch, memory/CPU optimization during gameplay or simultaneous use of the actual upstream manager has been verified.
 
 The Inno Setup installer was not compiled. This test release provides a runnable portable ZIP plus `Cai-Mizuauto.cmd` / `Install-Mizuauto.ps1` for per-user installation and a Start Menu shortcut. The copy/shortcut flow has not been executed on a real Windows machine. This is a test build for the user to exercise, not a certified stable release. No real account data or credentials are included.
+
+## Native Windows packaging check
+
+The first GitHub Windows diagnostics run detected that libsodium-net requests `libsodium-64.dll` on Microsoft .NET Framework. Wine had resolved the library under its other name. The package and Windows build script now include both `libsodium.dll` and `libsodium-64.dll`, with identical official x64 bytes. A rerun is required before publication.
