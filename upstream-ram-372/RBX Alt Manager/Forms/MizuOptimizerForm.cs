@@ -174,7 +174,7 @@ namespace RBX_Alt_Manager.Forms
             Color accent = Color.FromArgb(241, 118, 186);
             BackColor = background;
             ForeColor = Color.White;
-            Text = "Mizuauto";
+            Text = "Roblox Manager";
             ShowInTaskbar = false;
             ClientSize = new Size(660, 470);
             MinimumSize = new Size(620, 460);
@@ -300,11 +300,12 @@ namespace RBX_Alt_Manager.Forms
             SetStatus($"Chu kỳ: {intervalSeconds:0.0} giây");
         }
 
-        private bool OtherMizuautoRunning()
+        private bool OtherManagerRunning()
         {
             int ownPid = Process.GetCurrentProcess().Id;
             bool found = false;
-            foreach (Process process in Process.GetProcessesByName("mizuauto"))
+            foreach (string name in new[] { AppIdentity.ProcessName, "mizuauto" })
+            foreach (Process process in Process.GetProcessesByName(name))
             {
                 try { if (process.Id != ownPid) found = true; }
                 finally { process.Dispose(); }
@@ -314,10 +315,10 @@ namespace RBX_Alt_Manager.Forms
 
         private void StartAuto(bool save)
         {
-            if (OtherMizuautoRunning())
+            if (OtherManagerRunning())
             {
                 autoEnabled = false;
-                SetStatus("Đóng bản Mizuauto cũ trước khi bật Auto");
+                SetStatus("Đóng phiên bản cũ trước khi bật Auto");
                 return;
             }
             autoEnabled = true;
@@ -367,7 +368,7 @@ namespace RBX_Alt_Manager.Forms
                 RefreshRustSessions();
                 return;
             }
-            bool optimizerConflict = OtherMizuautoRunning();
+            bool optimizerConflict = OtherManagerRunning();
             if (optimizerConflict) RestoreCpu();
             HashSet<int> visible = VisibleRobloxPids();
             Dictionary<int, long> discovered = new Dictionary<int, long>();
@@ -410,14 +411,14 @@ namespace RBX_Alt_Manager.Forms
             foreach (int pid in cpuSamples.Keys.ToArray())
                 if (!discovered.ContainsKey(pid)) cpuSamples.Remove(pid);
             multiStatusLabel.Text = !AccountManager.MultiRobloxEnabled ? "Multi Roblox: bật trong Settings" : AccountManager.MultiRobloxReady ? "Multi Roblox: sẵn sàng" : "Multi Roblox: kiểm tra RAM gốc hoặc đóng Roblox";
-            if (optimizerConflict) SetStatus("Đóng bản Mizuauto cũ để bật tối ưu");
-            else if (statusLabel.Text == "Đang quét Roblox..." || statusLabel.Text.StartsWith("Đang theo dõi") || statusLabel.Text.StartsWith("Đóng bản Mizuauto cũ"))
+            if (optimizerConflict) SetStatus("Đóng phiên bản cũ để bật tối ưu");
+            else if (statusLabel.Text == "Đang quét Roblox..." || statusLabel.Text.StartsWith("Đang theo dõi") || statusLabel.Text.StartsWith("Đóng phiên bản cũ"))
                 SetStatus($"Đang theo dõi {discovered.Count} phiên");
         }
 
         private void RefreshRustSessions()
         {
-            bool optimizerConflict = OtherMizuautoRunning();
+            bool optimizerConflict = OtherManagerRunning();
             rustBackend.Configure((double)intervalSeconds, cpuThreads, autoEnabled && !optimizerConflict, ramLimitMb);
             HashSet<int> visible = VisibleRobloxPids();
             sessionTable.Rows.Clear();
@@ -439,8 +440,8 @@ namespace RBX_Alt_Manager.Forms
             multiStatusLabel.Text = !AccountManager.MultiRobloxEnabled
                 ? "Multi Roblox: bật trong Settings"
                 : AccountManager.MultiRobloxReady ? "Multi Roblox: sẵn sàng" : "Multi Roblox: kiểm tra RAM gốc hoặc đóng Roblox";
-            if (optimizerConflict) SetStatus("Đóng bản Mizuauto cũ để bật tối ưu");
-            else if (statusLabel.Text == "Đang quét Roblox..." || statusLabel.Text.StartsWith("Đang theo dõi") || statusLabel.Text.StartsWith("Đóng bản Mizuauto cũ") || statusLabel.Text.StartsWith("RAM:"))
+            if (optimizerConflict) SetStatus("Đóng phiên bản cũ để bật tối ưu");
+            else if (statusLabel.Text == "Đang quét Roblox..." || statusLabel.Text.StartsWith("Đang theo dõi") || statusLabel.Text.StartsWith("Đóng phiên bản cũ") || statusLabel.Text.StartsWith("RAM:"))
                 SetStatus($"Đang theo dõi {count} phiên · RAM: {(ramLimitMb == 0 ? "thu hồi tối đa" : ramLimitMb + " MB")}");
         }
 

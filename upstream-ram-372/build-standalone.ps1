@@ -28,7 +28,7 @@ try {
     Copy-Item (Join-Path $root 'mizuauto-engine\target\x86_64-pc-windows-msvc\release\mizuauto_engine.dll') $stage
     Copy-Item (Join-Path $root 'RBX Alt Manager\Resources\libsodium.dll') (Join-Path $stage 'libsodium.dll') -Force
     Copy-Item (Join-Path $root 'RBX Alt Manager\Resources\libsodium.dll') (Join-Path $stage 'libsodium-64.dll') -Force
-    foreach ($name in @('mizuauto.exe', 'mizuauto_engine.dll')) {
+    foreach ($name in @('RobloxManager.exe', 'mizuauto_engine.dll')) {
         if (-not (Test-Path (Join-Path $stage $name))) { throw "Missing build artifact: $name" }
     }
     foreach ($name in @('Roblox Account Manager.exe', 'RBX Alt Manager.exe', 'AccountData.json', 'RAMSettings.ini')) {
@@ -40,7 +40,7 @@ try {
     if (-not $compiler) { throw 'Cannot locate the Visual Studio Roslyn C# compiler for diagnostics.' }
     $sodiumManaged = Join-Path $root 'packages\libsodium-net.0.10.0\lib\Net40\Sodium.dll'
     Copy-Item $sodiumManaged (Join-Path $stage 'Sodium.dll') -Force
-    & $compiler /nologo /target:exe /platform:x64 "/reference:$sodiumManaged" "/out:$stage\Mizuauto.Diagnostics.exe" (Join-Path $root 'tests\Diagnostics.cs') (Join-Path $root 'tests\IsolationChecks.cs') (Join-Path $root 'RBX Alt Manager\Classes\AppIdentity.cs') (Join-Path $root 'RBX Alt Manager\Classes\ApiAuthentication.cs') (Join-Path $root 'RBX Alt Manager\Classes\Cryptography.cs')
+    & $compiler /nologo /target:exe /platform:x64 "/reference:$sodiumManaged" "/out:$stage\RobloxManager.Diagnostics.exe" (Join-Path $root 'tests\Diagnostics.cs') (Join-Path $root 'tests\IsolationChecks.cs') (Join-Path $root 'RBX Alt Manager\Classes\AppIdentity.cs') (Join-Path $root 'RBX Alt Manager\Classes\ApiAuthentication.cs') (Join-Path $root 'RBX Alt Manager\Classes\Cryptography.cs')
     if ($LASTEXITCODE -ne 0) { throw 'Diagnostics build failed.' }
     $crtRoot = $env:VCToolsRedistDir
     if (-not $crtRoot) {
@@ -56,12 +56,12 @@ try {
     foreach ($name in @('vcruntime140.dll', 'msvcp140.dll', 'vcruntime140_1.dll')) {
         if (-not (Test-Path (Join-Path $stage $name))) { throw "Missing standalone VC++ runtime: $name" }
     }
-    foreach ($name in @('Install-Mizuauto.ps1', 'Cai-Mizuauto.cmd', 'Kiem-tra-Mizuauto.cmd')) {
+    foreach ($name in @('Install-RobloxManager.ps1', 'Cai-Roblox-Manager.cmd', 'Kiem-tra-Roblox-Manager.cmd')) {
         Copy-Item (Join-Path $root "installer\$name") $stage
     }
     Copy-Item (Join-Path $root 'STANDALONE.vi.md') (Join-Path $stage 'HUONG-DAN.md')
     Copy-Item (Join-Path $root 'LICENSE') (Join-Path $stage 'LICENSE.txt')
     & (Join-Path $root 'installer\New-PackageManifest.ps1') -PackageDirectory $stage
     Write-Host "Build ready at $stage. No application was launched."
-    Write-Host "Compile installer\mizuauto.iss with Inno Setup 6.3 or newer after Windows smoke testing."
+    Write-Host "Compile installer\roblox-manager.iss with Inno Setup 6.3 or newer after Windows smoke testing."
 } finally { Pop-Location }

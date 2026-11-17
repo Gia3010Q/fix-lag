@@ -110,7 +110,7 @@ namespace RBX_Alt_Manager.Classes
         internal void Start()
         {
             if (disposed || thread != null) return;
-            thread = new Thread(EventLoop) { IsBackground = true, Name = "Mizuauto Roblox restore" };
+            thread = new Thread(EventLoop) { IsBackground = true, Name = "Roblox Manager Roblox restore" };
             thread.Start();
         }
 

@@ -34,7 +34,7 @@ namespace RBX_Alt_Manager.Forms
             GeneralTab.Text = "General";
             DeveloperTab.Text = "Developer";
             MiscellaneousTab.Text = "Miscellaneous";
-            SettingsTC.TabPages[3].Text = "Mizuauto";
+            SettingsTC.TabPages[3].Text = "Roblox Manager";
             ClientSize = new Size(Math.Max(ClientSize.Width, (int)(380 * Program.Scale)), ClientSize.Height);
             SettingsTC.SizeMode = TabSizeMode.Normal;
             SettingsTC.Padding = new Point((int)(20 * Program.Scale), (int)(4 * Program.Scale));
@@ -68,7 +68,7 @@ namespace RBX_Alt_Manager.Forms
         {
             AutoUpdateCB.Checked = false;
             AutoUpdateCB.Enabled = false;
-            AutoUpdateCB.Text = "Updates: Mizuauto installer";
+            AutoUpdateCB.Text = "Updates: Roblox Manager installer";
             AsyncJoinCB.Checked = AccountManager.General.Get<bool>("AsyncJoin");
             LaunchDelayNumber.Value = Math.Max(30, Math.Min(60, AccountManager.General.Get<decimal>("AccountJoinDelay")));
             SavePasswordCB.Checked = AccountManager.General.Get<bool>("SavePasswords");
@@ -142,7 +142,7 @@ namespace RBX_Alt_Manager.Forms
 
         private void InitializeMizuTab()
         {
-            var tab = new TabPage("Mizuauto");
+            var tab = new TabPage("Roblox Manager");
             var flow = new FlowLayoutPanel
             {
                 Dock = DockStyle.Fill,
@@ -292,7 +292,7 @@ namespace RBX_Alt_Manager.Forms
             catch (Exception exception)
             {
                 MessageBox.Show("Could not export notes: " + exception.Message,
-                    "Mizuauto", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    "Roblox Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 NotesPathBox.Text = saved;
                 return false;
             }
@@ -312,7 +312,7 @@ namespace RBX_Alt_Manager.Forms
             catch (Exception exception)
             {
                 MessageBox.Show("Could not select folder: " + exception.Message,
-                    "Mizuauto", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    "Roblox Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -402,7 +402,7 @@ namespace RBX_Alt_Manager.Forms
             AccountManager.IniSettings.Save("RAMSettings.ini");
 
             if (!AccountManager.Instance.UpdateMultiRoblox())
-                MessageBox.Show("Multi Roblox is waiting for older Roblox sessions to close. Mizuauto will retry automatically.", "Mizuauto", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Multi Roblox is waiting for older Roblox sessions to close. Roblox Manager will retry automatically.", "Roblox Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void AutoCookieRefreshCB_CheckedChanged(object sender, EventArgs e)
@@ -449,7 +449,7 @@ namespace RBX_Alt_Manager.Forms
             AccountManager.Developer.Set("EnableWebServer", EnableWSCB.Checked ? "true" : "false");
             AccountManager.IniSettings.Save("RAMSettings.ini");
 
-            MessageBox.Show("Roblox Account Manager must be restarted to enable this setting", "Roblox Account Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Roblox Manager must be restarted to enable this setting", "Roblox Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void ERRPCB_CheckedChanged(object sender, EventArgs e)
@@ -499,7 +499,7 @@ namespace RBX_Alt_Manager.Forms
             AccountManager.WebServer.Set("AllowExternalConnections", AllowExternalConnectionsCB.Checked ? "true" : "false");
             AccountManager.IniSettings.Save("RAMSettings.ini");
 
-            MessageBox.Show("Roblox Account Manager must be restarted to enable this setting\n\nThis setting requires admin privileges", "Roblox Account Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Roblox Manager must be restarted to enable this setting\n\nThis setting requires admin privileges", "Roblox Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void PortNumber_ValueChanged(object sender, EventArgs e)
@@ -593,7 +593,7 @@ namespace RBX_Alt_Manager.Forms
 
         private void ForceUpdateButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Cập nhật bằng bộ cài Mizuauto riêng. Bộ cập nhật RAM gốc đã được tắt để giữ hai ứng dụng độc lập.", "Mizuauto", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Cập nhật bằng bộ cài Roblox Manager riêng. Bộ cập nhật RAM gốc đã được tắt để giữ hai ứng dụng độc lập.", "Roblox Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         #endregion

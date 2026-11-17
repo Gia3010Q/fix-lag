@@ -474,7 +474,7 @@ namespace RBX_Alt_Manager.Forms
             int port;
             if (!int.TryParse(AccountManager.AccountControl.Get("NexusPort"), out port) || port < 1 || port > 65535)
             {
-                MessageBox.Show("Invalid Nexus port", "Mizuauto");
+                MessageBox.Show("Invalid Nexus port", "Roblox Manager");
                 return;
             }
             string loader = Resources.NexusLoader

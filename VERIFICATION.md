@@ -33,3 +33,11 @@ The Inno Setup installer was not compiled. This test release provides a runnable
 ## Native Windows packaging check
 
 The first GitHub Windows diagnostics run detected that libsodium-net requests `libsodium-64.dll` on Microsoft .NET Framework. Wine had resolved the library under its other name. The package and Windows build script now include both `libsodium.dll` and `libsodium-64.dll`, with identical official x64 bytes. A rerun is required before publication.
+
+## Roblox Manager 3.7.2.3 rename
+
+Frontend and diagnostics rebuilt successfully from the renamed source. Windows display/product name, EXE, launchers, shortcut and installation directory now use Roblox Manager. Profile path, app identity, mutex, Rust ABI and engine DLL stay compatible with the prior standalone build. Original upstream manager identity remains distinct. Both native libsodium names are retained. PowerShell scripts parse successfully on PowerShell 7.4.6.
+
+The previous 3.7.2.2 package passed native Windows diagnostics in [run 44086418062](https://github.com/Gia3010Q/fix-lag/actions/runs/44086418062). The new publish workflow requires native Windows diagnostics and version metadata checks, SHA-256 verification of every installed package file, shortcut/startup migration from a synthetic legacy installation, and preservation of a synthetic profile marker before publishing the new pre-release. This does not test actual GUI sign-in or gameplay.
+
+The runnable install helper is now `Cai-Roblox-Manager.cmd` / `Install-RobloxManager.ps1`. `RobloxManager.exe` also runs from the fully extracted portable package. No compiled Inno Setup installer is included.

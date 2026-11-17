@@ -15,7 +15,7 @@ namespace RBX_Alt_Manager
         /// The main entry point for the application.
         /// </summary>
 
-        public static ILog Logger => LogManager.GetLogger("Mizuauto");
+        public static ILog Logger => LogManager.GetLogger("Roblox Manager");
         public static bool Closed = false; // RobloxProcess.cs would cause the program to chill in the background as long roblox was also running
         public static bool Elevated;
         public static float Scale
@@ -50,12 +50,12 @@ namespace RBX_Alt_Manager
             // Never run the upstream updater: it installs a different application.
             if (Array.Exists(Arguments, argument => argument == "-update"))
             {
-                MessageBox.Show("Cập nhật Mizuauto bằng bộ cài Mizuauto riêng.", "Mizuauto");
+                MessageBox.Show("Cập nhật Roblox Manager bằng bộ cài Roblox Manager riêng.", "Roblox Manager");
                 return;
             }
             if (AppIdentity.OriginalManagerInFolder(AppIdentity.InstallDirectory))
             {
-                MessageBox.Show("Hãy cài Mizuauto vào thư mục riêng, không đặt cạnh Roblox Account Manager.exe hoặc RBX Alt Manager.exe.", "Mizuauto");
+                MessageBox.Show("Hãy cài Roblox Manager vào thư mục riêng, không đặt cạnh Roblox Account Manager.exe hoặc RBX Alt Manager.exe.", "Roblox Manager");
                 return;
             }
 
@@ -67,13 +67,13 @@ namespace RBX_Alt_Manager
                 catch (AbandonedMutexException) { acquired = true; }
                 if (!acquired)
                 {
-                    MessageBox.Show("Mizuauto đang chạy. Bạn vẫn có thể mở RAM gốc riêng.", "Mizuauto");
+                    MessageBox.Show("Roblox Manager đang chạy. Bạn vẫn có thể mở RAM gốc riêng.", "Roblox Manager");
                     return;
                 }
                 try
                 {
                     Directory.CreateDirectory(AppIdentity.DataDirectory);
-                    // Existing relative data/cache paths now resolve inside Mizuauto's profile.
+                    // Existing relative data/cache paths now resolve inside Roblox Manager's profile.
                     // Managed and native dependencies still load from the executable directory.
                     Directory.SetCurrentDirectory(AppIdentity.DataDirectory);
                     Elevated = new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
@@ -88,7 +88,7 @@ namespace RBX_Alt_Manager
                         File.WriteAllText(Path.Combine(AppIdentity.DataDirectory, "startup-error.log"), exception.ToString());
                     }
                     catch { }
-                    MessageBox.Show("Không khởi động được Mizuauto: " + exception.Message + "\nChi tiết: " + Path.Combine(AppIdentity.DataDirectory, "startup-error.log"), "Mizuauto", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Không khởi động được Roblox Manager: " + exception.Message + "\nChi tiết: " + Path.Combine(AppIdentity.DataDirectory, "startup-error.log"), "Roblox Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 finally { mutex.ReleaseMutex(); }
             }

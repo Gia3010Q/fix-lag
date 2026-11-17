@@ -116,7 +116,7 @@ namespace RBX_Alt_Manager.Forms
 
         private void BuildBackgroundControls()
         {
-            Text = "Mizuauto · Edit Theme";
+            Text = "Roblox Manager · Edit Theme";
             ClientSize = new Size(548, 328);
             MinimumSize = Size;
             MaximumSize = Size;
@@ -154,7 +154,7 @@ namespace RBX_Alt_Manager.Forms
 
         private void ChooseBackground()
         {
-            using (OpenFileDialog dialog = new OpenFileDialog { Filter = "Ảnh, GIF, video|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.mp4;*.wmv;*.avi;*.m4v;*.mov|Ảnh và GIF|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Video|*.mp4;*.wmv;*.avi;*.m4v;*.mov", Title = "Chọn nền Mizuauto" })
+            using (OpenFileDialog dialog = new OpenFileDialog { Filter = "Ảnh, GIF, video|*.png;*.jpg;*.jpeg;*.bmp;*.gif;*.mp4;*.wmv;*.avi;*.m4v;*.mov|Ảnh và GIF|*.png;*.jpg;*.jpeg;*.bmp;*.gif|Video|*.mp4;*.wmv;*.avi;*.m4v;*.mov", Title = "Chọn nền Roblox Manager" })
             {
                 if (dialog.ShowDialog(this) != DialogResult.OK) return;
                 try
@@ -186,7 +186,7 @@ namespace RBX_Alt_Manager.Forms
                 }
                 catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException || ex is ArgumentException || ex is OutOfMemoryException)
                 {
-                    MessageBox.Show(this, "Không thể đọc media: " + ex.Message, "Mizuauto", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(this, "Không thể đọc media: " + ex.Message, "Roblox Manager", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
         }
@@ -479,7 +479,7 @@ namespace RBX_Alt_Manager.Forms
         {
             UseDarkTopBar = !UseDarkTopBar;
             SaveTheme();
-            MessageBox.Show("This option requires RAM to be restarted.\nThis may not work on older versions of windows.\nEnabled: " + (UseDarkTopBar ? "True" : "false"), "Roblox Account Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("This option requires Roblox Manager to be restarted.\nThis may not work on older versions of windows.\nEnabled: " + (UseDarkTopBar ? "True" : "false"), "Roblox Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

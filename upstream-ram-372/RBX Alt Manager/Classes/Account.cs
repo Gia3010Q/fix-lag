@@ -566,7 +566,7 @@ namespace RBX_Alt_Manager
         {
             await WaitForJoinSlot(cancellationToken);
             if (AccountManager.Instance == null || AccountManager.Instance.IsDisposed)
-                return "ERROR: Mizuauto đã đóng trước khi đến lượt mở Roblox.";
+                return "ERROR: Roblox Manager đã đóng trước khi đến lượt mở Roblox.";
             if (string.IsNullOrEmpty(BrowserTrackerID))
             {
                 Random r = new Random();
@@ -654,7 +654,7 @@ namespace RBX_Alt_Manager
                     {
                         AccountManager.Instance.InvokeIfRequired(() =>
                         {
-                            if (Utilities.YesNoPrompt("Roblox Account Manager", "Account Manager has detected your account's privacy settings do not allow you to join private servers.", "Would you like to change this setting to Everyone now?"))
+                            if (Utilities.YesNoPrompt("Roblox Manager", "Account Manager has detected your account's privacy settings do not allow you to join private servers.", "Would you like to change this setting to Everyone now?"))
                             {
                                 if (!CheckPin(true)) return;
 

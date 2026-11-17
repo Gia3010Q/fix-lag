@@ -10,12 +10,16 @@ namespace RBX_Alt_Manager
         internal const string LegacyManagerMutex = "{93b3858f-3dac-4dc0-99cb-0476efc5adce}";
         // This name belongs to Roblox. It must stay shared with the original manager.
         internal const string RobloxMutex = "ROBLOX_singletonMutex";
-        internal const string StartupName = "Mizuauto";
+        internal const string DisplayName = "Roblox Manager";
+        internal const string ExecutableName = "RobloxManager.exe";
+        internal const string ProcessName = "RobloxManager";
+        internal const string StartupName = "Roblox Manager";
         internal const string ExternalMultiSetting = "UseOriginalRamMultiRoblox";
         internal const string WebPort = "7965";
         internal const string NexusPort = "5243";
 
         internal static string InstallDirectory => AppDomain.CurrentDomain.BaseDirectory;
+        // Keep the existing profile directory so renaming never moves account data.
         internal static string DataDirectory => Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Mizuauto", "Manager");
 

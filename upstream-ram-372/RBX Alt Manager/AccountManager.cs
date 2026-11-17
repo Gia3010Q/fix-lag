@@ -156,10 +156,10 @@ namespace RBX_Alt_Manager
                 General.Set("WindowScale", Screen.PrimaryScreen.Bounds.Height <= Screen.PrimaryScreen.Bounds.Width /*scuffed*/ ? Math.Max(Math.Min(Screen.PrimaryScreen.Bounds.Height / 1080f, 2f), 1f).ToString(".0#", CultureInfo.InvariantCulture) : "1.0");
 
                 if (Program.Scale > 1)
-                    if (!Utilities.YesNoPrompt("Roblox Account Manager", "RAM has detected you have a monitor larger than average", $"Would you like to keep the WindowScale setting of {Program.Scale:F2}?", false))
+                    if (!Utilities.YesNoPrompt("Roblox Manager", "RAM has detected you have a monitor larger than average", $"Would you like to keep the WindowScale setting of {Program.Scale:F2}?", false))
                         General.Set("WindowScale", "1.0");
                     else
-                        MessageBox.Show("In case the font scaling is incorrect, open RAMSettings.ini and change \"ScaleFonts=true\" to \"ScaleFonts=false\" without the quotes.", "Roblox Account Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("In case the font scaling is incorrect, open RAMSettings.ini and change \"ScaleFonts=true\" to \"ScaleFonts=false\" without the quotes.", "Roblox Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             if (!General.Exists("ScaleFonts")) General.Set("ScaleFonts", "true");
             if (!General.Exists("AutoCookieRefresh")) General.Set("AutoCookieRefresh", "true");
@@ -263,7 +263,7 @@ namespace RBX_Alt_Manager
                 resizeBackgroundTimer.Dispose();
                 glassRefreshTimer.Dispose();
             };
-            Text = "Mizuauto";
+            Text = "Roblox Manager";
             try
             {
                 Icon = System.Drawing.Icon.ExtractAssociatedIcon(Application.ExecutablePath);
@@ -425,7 +425,7 @@ namespace RBX_Alt_Manager
             {
                 var Header = new ReadOnlySpan<byte>(BackupData, 0, Cryptography.RAMHeader.Length);
 
-                if (Header.SequenceEqual(Cryptography.RAMHeader) && MessageBox.Show("The existing backup file is password-locked, would you like to attempt to load it?", "Roblox Account Manager", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                if (Header.SequenceEqual(Cryptography.RAMHeader) && MessageBox.Show("The existing backup file is password-locked, would you like to attempt to load it?", "Roblox Manager", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                 {
                     if (File.Exists(SaveFilePath))
                     {
@@ -441,7 +441,7 @@ namespace RBX_Alt_Manager
                     return;
                 }
 
-                if (MessageBox.Show("No accounts were loaded but there is a backup file, would you like to load the backup file?", "Roblox Account Manager", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+                if (MessageBox.Show("No accounts were loaded but there is a backup file, would you like to load the backup file?", "Roblox Manager", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
                 {
                     try
                     {
@@ -452,7 +452,7 @@ namespace RBX_Alt_Manager
                     catch
                     {
                         try { AccountsList = JsonConvert.DeserializeObject<List<Account>>(Encoding.UTF8.GetString(BackupData)); }
-                        catch { MessageBox.Show("Failed to load backup file!", "Roblox Account Manager", MessageBoxButtons.OKCancel, MessageBoxIcon.Error); }
+                        catch { MessageBox.Show("Failed to load backup file!", "Roblox Manager", MessageBoxButtons.OKCancel, MessageBoxIcon.Error); }
                     }
                 }
             }
@@ -576,7 +576,7 @@ namespace RBX_Alt_Manager
             }
             catch (Exception exception)
             {
-                MessageBox.Show($"Incorrect Password!\n\n{exception.Message}", "Roblox Account Manager", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show($"Incorrect Password!\n\n{exception.Message}", "Roblox Manager", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally { PasswordTextBox.Text = string.Empty; PasswordTextBox.Focus(); }
         }
@@ -602,7 +602,7 @@ namespace RBX_Alt_Manager
         {
             if (PasswordSelectionTB.Text.Length < 4)
             {
-                MessageBox.Show("Invalid password, your password must contain 4 or more characters", "Roblox Account Manager", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Invalid password, your password must contain 4 or more characters", "Roblox Manager", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -614,7 +614,7 @@ namespace RBX_Alt_Manager
             {
                 LastHash = new ReadOnlyMemory<byte>(PasswordHash.ToArray());
                 PasswordSelectionTB.Text = string.Empty;
-                MessageBox.Show("Please confirm your password.", "Roblox Account Manager", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                MessageBox.Show("Please confirm your password.", "Roblox Manager", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
             }
             else
             {
@@ -628,7 +628,7 @@ namespace RBX_Alt_Manager
                     LastHash = null;
                 }
                 else
-                    MessageBox.Show("You have entered the wrong password, please try again.", "Roblox Account Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("You have entered the wrong password, please try again.", "Roblox Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -826,7 +826,7 @@ namespace RBX_Alt_Manager
                     AltManagerWS.Run();
                 }
             }
-            catch (Exception x) { MessageBox.Show($"Failed to start webserver!\n\n{x}", "Roblox Account Manager", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+            catch (Exception x) { MessageBox.Show($"Failed to start webserver!\n\n{x}", "Roblox Manager", MessageBoxButtons.OK, MessageBoxIcon.Error); }
 
             Task.Run(() =>
             {
@@ -1002,12 +1002,12 @@ namespace RBX_Alt_Manager
             if (!request.IsLocal && !WebServer.Get<bool>("AllowExternalConnections")) return Reply("External connections are not allowed", false, 401, string.Empty);
             if (AbsolutePath == "/favicon.ico") return ""; // always return nothing
 
-            if (AbsolutePath == "/Running") return Reply("Roblox Account Manager is running", true, Raw: "true");
+            if (AbsolutePath == "/Running") return Reply("Roblox Manager is running", true, Raw: "true");
 
             string Body = new StreamReader(request.InputStream).ReadToEnd();
             string Method = AbsolutePath.Substring(1);
             string Account = request.QueryString["Account"];
-            string Password = request.Headers["X-Mizuauto-Password"] ?? request.QueryString["Password"];
+            string Password = request.Headers["X-RobloxManager-Password"] ?? request.Headers["X-Mizuauto-Password"] ?? request.QueryString["Password"];
 
             // All account APIs require authentication, including imports and edits.
             // /Running above remains a public local health check.
@@ -1240,7 +1240,7 @@ namespace RBX_Alt_Manager
         private void AccountManager_Shown(object sender, EventArgs e)
         {
             if (!UpdateMultiRoblox() && !General.Get<bool>("HideRbxAlert"))
-                MessageBox.Show("Multi Roblox đang chờ mutex. Đóng các phiên Roblox đang chạy; Mizuauto sẽ tự thử lại mỗi 2 giây.", "Mizuauto", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Multi Roblox đang chờ mutex. Đóng các phiên Roblox đang chạy; Roblox Manager sẽ tự thử lại mỗi 2 giây.", "Roblox Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             int Major = Environment.OSVersion.Version.Major, Minor = Environment.OSVersion.Version.Minor;
 
@@ -1291,7 +1291,7 @@ namespace RBX_Alt_Manager
                 string cef = Path.Combine(AppIdentity.InstallDirectory, "libcef.dll");
                 if (!File.Exists(cef))
                 {
-                    DLChromiumLabel.Text = "Thiếu thư viện trình duyệt. Giải nén hoặc cài lại đầy đủ Mizuauto.";
+                    DLChromiumLabel.Text = "Thiếu thư viện trình duyệt. Giải nén hoặc cài lại đầy đủ Roblox Manager.";
                     DLChromiumLabel.Visible = true;
                 }
             }
@@ -1391,7 +1391,7 @@ namespace RBX_Alt_Manager
 
                     if (Utilities.YesNoPrompt($"An error was encountered attempting to login", "You may have a corrupted chromium installation", "Would you like to re-install chromium?", false))
                     {
-                        MessageBox.Show("Roblox Account Manager will now close since it can't delete the folder while it's in use.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Roblox Manager will now close since it can't delete the folder while it's in use.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                         if (Directory.GetFiles(AccountBrowser.Fetcher.DownloadsFolder).Length <= 1 && Directory.GetDirectories(AccountBrowser.Fetcher.DownloadsFolder).Length <= 1)
                             Process.Start("cmd.exe", $"/c rmdir /s /q \"{AccountBrowser.Fetcher.DownloadsFolder}\"");
@@ -1450,7 +1450,7 @@ namespace RBX_Alt_Manager
 
                 Dialog.Show();
             }
-            else if (MessageBox.Show($"{(PuppeteerSupported ? "Chromium" : "CefSharp")} is still downloading, you may have to wait a while before adding an account.\n\nNot working? You can choose to manually install by pressing \"Yes\"", "Roblox Account Manager", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information) == DialogResult.Yes)
+            else if (MessageBox.Show($"{(PuppeteerSupported ? "Chromium" : "CefSharp")} is still downloading, you may have to wait a while before adding an account.\n\nNot working? You can choose to manually install by pressing \"Yes\"", "Roblox Manager", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information) == DialogResult.Yes)
                 ShowManualInstallInstructions();
         }
 
@@ -1560,7 +1560,7 @@ namespace RBX_Alt_Manager
             bool LaunchMultiple = AccountsView.SelectedObjects.Count > 1;
             if (LaunchMultiple && (!MultiRobloxEnabled || !UpdateMultiRoblox()))
             {
-                MessageBox.Show("Multi Roblox chưa sẵn sàng. Nếu dùng RAM gốc: mở RAM, bật Multi Roblox ở RAM và chọn Use Multi Roblox from RAM trong tab Mizuauto. Giữ RAM mở trong khi chơi.", "Mizuauto", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Multi Roblox chưa sẵn sàng. Nếu dùng RAM gốc: mở RAM, bật Multi Roblox ở RAM và chọn Use Multi Roblox from RAM trong tab Roblox Manager. Giữ RAM mở trong khi chơi.", "Roblox Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             List<Account> accountsToLaunch = SelectedAccounts.ToList();
@@ -1583,14 +1583,14 @@ namespace RBX_Alt_Manager
                     string res = await Task.Run(() => singleAccount.JoinServer(PlaceId, selectedJobId, false, VIPServer));
 
                     if (!IsDisposed && !res.Contains("Success"))
-                        MessageBox.Show(this, res, "Mizuauto · Lỗi mở Roblox", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show(this, res, "Roblox Manager · Lỗi mở Roblox", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
             catch (Exception error)
             {
                 Program.Logger.Error("Join Roblox failed: " + error);
                 if (!IsDisposed)
-                    MessageBox.Show(this, "Không mở được Roblox. Hãy thử lại; xem log nếu lỗi tiếp tục.", "Mizuauto · Lỗi mở Roblox", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(this, "Không mở được Roblox. Hãy thử lại; xem log nếu lỗi tiếp tục.", "Roblox Manager · Lỗi mở Roblox", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             finally
             {
@@ -1620,7 +1620,7 @@ namespace RBX_Alt_Manager
             {
                 if (!MultiRobloxEnabled || !UpdateMultiRoblox())
                 {
-                    MessageBox.Show("Multi Roblox chưa sẵn sàng. Kiểm tra chế độ Multi Roblox trong Settings; nếu dùng RAM gốc, hãy giữ RAM mở với Multi Roblox đã bật.", "Mizuauto", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Multi Roblox chưa sẵn sàng. Kiểm tra chế độ Multi Roblox trong Settings; nếu dùng RAM gốc, hãy giữ RAM mở với Multi Roblox đã bật.", "Roblox Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
                 LauncherToken = new CancellationTokenSource();
@@ -1639,7 +1639,7 @@ namespace RBX_Alt_Manager
         private void ServerList_Click(object sender, EventArgs e)
         {
             if (AccountsList.Count == 0 || LastValidAccount == null)
-                MessageBox.Show("Some features may not work unless there is a valid account", "Roblox Account Manager", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Some features may not work unless there is a valid account", "Roblox Manager", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
             if (ServerListForm.Visible)
             {
@@ -1698,7 +1698,7 @@ namespace RBX_Alt_Manager
 
         private void AccountManager_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (IsDownloadingChromium && !Utilities.YesNoPrompt("Roblox Account Manager", $"{(PuppeteerSupported ? "Chromium" : "CefSharp")} is still being downloaded, exiting may corrupt your chromium installation and prevent account manager from working", "Exit anyways?", false))
+            if (IsDownloadingChromium && !Utilities.YesNoPrompt("Roblox Manager", $"{(PuppeteerSupported ? "Chromium" : "CefSharp")} is still being downloaded, exiting may corrupt your chromium installation and prevent account manager from working", "Exit anyways?", false))
             {
                 e.Cancel = true;
 
@@ -1977,7 +1977,7 @@ namespace RBX_Alt_Manager
                     if (account.Fields.ContainsKey("SavedPlaceId") || account.Fields.ContainsKey("SavedJobId"))
                         HasSaved.Add(account);
 
-                if (HasSaved.Count > 0 && MessageBox.Show($"Are you sure you want to remove {HasSaved.Count} saved Place Ids?", "Roblox Account Manager", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.OK)
+                if (HasSaved.Count > 0 && MessageBox.Show($"Are you sure you want to remove {HasSaved.Count} saved Place Ids?", "Roblox Manager", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.OK)
                     foreach (Account account in HasSaved)
                     {
                         account.RemoveField("SavedPlaceId");
@@ -2034,7 +2034,7 @@ namespace RBX_Alt_Manager
 
         private void sortAlphabeticallyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show($"Are you sure you want to sort every account alphabetically?", "Roblox Account Manager", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            DialogResult result = MessageBox.Show($"Are you sure you want to sort every account alphabetically?", "Roblox Manager", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (result == DialogResult.Yes)
             {
@@ -2162,7 +2162,7 @@ namespace RBX_Alt_Manager
             Token.Cancel();
             Token.Dispose();
             if (failures.Count > 0 && !IsDisposed)
-                BeginInvoke(new Action(() => MessageBox.Show(string.Join("\n\n", failures), "Mizuauto · Lỗi mở Roblox", MessageBoxButtons.OK, MessageBoxIcon.Warning)));
+                BeginInvoke(new Action(() => MessageBox.Show(string.Join("\n\n", failures), "Roblox Manager · Lỗi mở Roblox", MessageBoxButtons.OK, MessageBoxIcon.Warning)));
         }
 
         public void NextAccount() => LaunchNext = true;
@@ -2173,10 +2173,10 @@ namespace RBX_Alt_Manager
         }
 
         private void infoToolStripMenuItem1_Click(object sender, EventArgs e) =>
-            MessageBox.Show("Roblox Account Manager created by ic3w0lf under the GNU GPLv3 license.", "Roblox Account Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Roblox Manager, based on Mizuauto. Original Roblox Account Manager created by ic3w0lf under the GNU GPLv3 license.", "Roblox Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
         private void groupsToolStripMenuItem_Click(object sender, EventArgs e) =>
-            MessageBox.Show("Groups can be sorted by naming them a number then whatever you want.\nFor example: You can put Group Apple on top by naming it '001 Apple' or '1Apple'.\nThe numbers will be hidden from the name but will be correctly sorted depending on the number.\nAccounts can also be dragged into groups.", "Roblox Account Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Groups can be sorted by naming them a number then whatever you want.\nFor example: You can put Group Apple on top by naming it '001 Apple' or '1Apple'.\nThe numbers will be hidden from the name but will be correctly sorted depending on the number.\nAccounts can also be dragged into groups.", "Roblox Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
         private void OptimizerButton_Click(object sender, EventArgs e) => ShowMizuOptimizer();
 

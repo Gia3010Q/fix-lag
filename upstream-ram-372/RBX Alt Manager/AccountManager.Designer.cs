@@ -1092,7 +1092,7 @@ namespace RBX_Alt_Manager
             this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(800, 340);
             this.Name = "AccountManager";
-            this.Text = "Mizuauto";
+            this.Text = "Roblox Manager";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AccountManager_FormClosing);
             this.Load += new System.EventHandler(this.AccountManager_Load);
             this.Shown += new System.EventHandler(this.AccountManager_Shown);

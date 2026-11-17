@@ -1,0 +1,93 @@
+name: Publish Roblox Manager Windows test
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'release-upload-3.7.2.3-*'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    if: github.event_name != 'push' || !github.event.deleted
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Assemble and verify the prebuilt test package
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $manifest = Get-Content release-payload/manifest.json -Raw | ConvertFrom-Json
+          $destination = Join-Path $env:RUNNER_TEMP $manifest.filename
+          $output = [IO.File]::Create($destination)
+          try {
+            foreach ($part in $manifest.parts) {
+              $path = Join-Path $PWD "release-payload/$($part.name)"
+              if ((Get-FileHash $path -Algorithm SHA256).Hash -ne $part.sha256) { throw "Damaged part: $($part.name)" }
+              $inputStream = [IO.File]::OpenRead($path)
+              try { $inputStream.CopyTo($output) } finally { $inputStream.Dispose() }
+            }
+          } finally { $output.Dispose() }
+          if ((Get-FileHash $destination -Algorithm SHA256).Hash -ne $manifest.sha256) { throw 'Package SHA256 mismatch' }
+          if ((Get-Item $destination).Length -ne $manifest.bytes) { throw 'Package size mismatch' }
+          "MANAGER_PACKAGE=$destination" >> $env:GITHUB_ENV
+          "RELEASE_TAG=$($manifest.tag)" >> $env:GITHUB_ENV
+      - name: Verify Windows branding and run diagnostics with synthetic data
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $directory = Join-Path $env:RUNNER_TEMP 'roblox-manager-checks'
+          Expand-Archive -LiteralPath $env:MANAGER_PACKAGE -DestinationPath $directory
+          $root = Join-Path $directory 'RobloxManager'
+          $version = [Diagnostics.FileVersionInfo]::GetVersionInfo((Join-Path $root 'RobloxManager.exe'))
+          if ($version.ProductName -ne 'Roblox Manager' -or $version.FileDescription -ne 'Roblox Manager' -or $version.FileVersion -ne '3.7.2.3') { throw 'Wrong executable branding/version' }
+          if (Test-Path (Join-Path $root 'mizuauto.exe')) { throw 'Old executable bundled' }
+          & (Join-Path $root 'RobloxManager.Diagnostics.exe')
+          if ($LASTEXITCODE -ne 0) { throw 'Windows diagnostics failed; release remains a draft' }
+          "MANAGER_TEST_ROOT=$root" >> $env:GITHUB_ENV
+      - name: Verify installer and shortcut migration with a synthetic profile
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $legacy = Join-Path $env:LOCALAPPDATA 'Programs/Mizuauto'
+          $profile = Join-Path $env:LOCALAPPDATA 'Mizuauto/Manager'
+          $menu = Join-Path $env:APPDATA 'Microsoft/Windows/Start Menu/Programs'
+          New-Item -ItemType Directory -Force $legacy,$profile,$menu | Out-Null
+          @{appId='66f908fc-b7d0-45da-9050-c98e1095a3d1'} | ConvertTo-Json | Set-Content (Join-Path $legacy 'package-manifest.json')
+          $marker = Join-Path $profile 'rename-profile-marker.txt'
+          Set-Content $marker 'synthetic profile is preserved'
+          $before = (Get-FileHash $marker).Hash
+          $shell = New-Object -ComObject WScript.Shell
+          $oldLinkPath = Join-Path $menu 'Mizuauto.lnk'
+          $oldLink = $shell.CreateShortcut($oldLinkPath)
+          $oldLink.TargetPath = Join-Path $legacy 'mizuauto.exe'
+          $oldLink.Save()
+          $runKey = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run'
+          New-Item -Path $runKey -Force | Out-Null
+          Set-ItemProperty -LiteralPath $runKey -Name Mizuauto -Value ('"' + (Join-Path $legacy 'mizuauto.exe') + '"')
+          & (Join-Path $env:MANAGER_TEST_ROOT 'Install-RobloxManager.ps1') -NoLaunch
+          $target = Join-Path $env:LOCALAPPDATA 'Programs/RobloxManager'
+          $exe = Join-Path $target 'RobloxManager.exe'
+          if (-not (Test-Path $exe)) { throw 'Installed executable missing' }
+          $newLink = $shell.CreateShortcut((Join-Path $menu 'Roblox Manager.lnk'))
+          if ($newLink.TargetPath -ne $exe) { throw 'Wrong shortcut target' }
+          if (Test-Path $oldLinkPath) { throw 'Known legacy shortcut was not migrated' }
+          if ((Get-FileHash $marker).Hash -ne $before) { throw 'Profile marker changed' }
+          if ((Get-ItemPropertyValue -LiteralPath $runKey -Name 'Roblox Manager') -ne ('"' + $exe + '"')) { throw 'Startup entry was not migrated' }
+          Write-Host 'PASS: Windows branding, diagnostics, package installation, shortcut/startup migration and synthetic profile preservation.'
+      - name: Upload assets and publish the pre-release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $manifest = Get-Content release-payload/manifest.json -Raw | ConvertFrom-Json
+          $assets = @($env:MANAGER_PACKAGE) + @($manifest.extra_assets | ForEach-Object { Join-Path $PWD "release-payload/$_" })
+          gh release upload $env:RELEASE_TAG @assets --clobber
+          if ($LASTEXITCODE -ne 0) { throw 'Release asset upload failed' }
+          gh release edit $env:RELEASE_TAG --draft=false --prerelease --latest=false
+          if ($LASTEXITCODE -ne 0) { throw 'Pre-release publication failed' }

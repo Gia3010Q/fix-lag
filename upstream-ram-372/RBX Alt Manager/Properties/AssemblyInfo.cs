@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Mizuauto")]
-[assembly: AssemblyDescription("Roblox Account Manager 3.7.2 with Mizuauto RAM/CPU optimizer; original by ic3w0lf")]
+[assembly: AssemblyTitle("Roblox Manager")]
+[assembly: AssemblyDescription("Roblox Manager standalone, based on Mizuauto and Roblox Account Manager; original by ic3w0lf")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Mizuauto")]
-[assembly: AssemblyProduct("Mizuauto")]
+[assembly: AssemblyCompany("Roblox Manager")]
+[assembly: AssemblyProduct("Roblox Manager")]
 [assembly: AssemblyCopyright("Original RAM © ic3 2023; Mizuauto modifications 2026")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -32,4 +32,4 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("3.7.2.2")]
+[assembly: AssemblyFileVersion("3.7.2.3")]

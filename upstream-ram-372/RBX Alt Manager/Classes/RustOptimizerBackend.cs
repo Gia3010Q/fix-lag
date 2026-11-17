@@ -53,7 +53,7 @@ namespace RBX_Alt_Manager.Classes
             string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "mizuauto_engine.dll");
             if (!File.Exists(path))
             {
-                error = "Thiếu mizuauto_engine.dll cạnh mizuauto.exe";
+                error = "Thiếu mizuauto_engine.dll cạnh RobloxManager.exe";
                 return null;
             }
 
