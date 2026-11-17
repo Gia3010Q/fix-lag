@@ -1,0 +1,18 @@
+Fontconfig error: No writable cache directories
+Fontconfig error: No writable cache directories
+PASS: independent identity/profile/ports, original-folder protection, and mutex ownership lifecycle.
+PASS: API password regression cases.
+PASS: VC++ runtime and native cryptography library load.
+/var/hostdir/mono/mono/eglib/gpath.c:115: assertion 'filename != NULL' failed
+
+/var/hostdir/mono/mono/eglib/gpath.c:115: assertion 'filename != NULL' failed
+
+/var/hostdir/mono/mono/eglib/gpath.c:115: assertion 'filename != NULL' failed
+
+/var/hostdir/mono/mono/eglib/gpath.c:115: assertion 'filename != NULL' failed
+
+/var/hostdir/mono/mono/eglib/gpath.c:115: assertion 'filename != NULL' failed
+
+PASS: actual account encryption/decryption code with synthetic data.
+PASS: Rust DLL load, ABI, null guards, configuration, snapshot and shutdown.
+No account data was opened. Auto optimizer was not enabled.

@@ -1,0 +1,186 @@
+   Compiling serde_core v1.0.229
+   Compiling num-traits v0.2.19
+   Compiling zmij v1.0.23
+   Compiling memchr v2.8.3
+   Compiling windows-link v0.2.1
+   Compiling itoa v1.0.19
+   Compiling chrono v0.4.45
+   Compiling serde_json v1.0.154
+   Compiling serde v1.0.229
+   Compiling mizuauto-engine v0.1.0 (/workspace/Mizuauto-standalone/upstream-ram-372/mizuauto-engine)
+warning: associated items `load` and `save` are never used
+  --> ../mizuauto-rust/src/optimizer_state.rs:26:12
+   |
+25 | impl OptimizerState {
+   | ------------------- associated items in this implementation
+26 |     pub fn load(path: &Path) -> Self {
+   |            ^^^^
+...
+45 |     pub fn save(&self, path: &Path) -> io::Result<()> {
+   |            ^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: constant `PROCESS_TERMINATE` is never used
+  --> ../mizuauto-rust/src/platform.rs:16:7
+   |
+16 | const PROCESS_TERMINATE: u32 = 0x0001;
+   |       ^^^^^^^^^^^^^^^^^
+
+warning: struct `DataBlob` is never constructed
+  --> ../mizuauto-rust/src/platform.rs:68:8
+   |
+68 | struct DataBlob {
+   |        ^^^^^^^^
+
+warning: function `wide` is never used
+   --> ../mizuauto-rust/src/platform.rs:212:4
+    |
+212 | fn wide(s: impl AsRef<OsStr>) -> Vec<u16> {
+    |    ^^^^
+
+warning: function `terminate_roblox_at_startup` is never used
+   --> ../mizuauto-rust/src/platform.rs:297:8
+    |
+297 | pub fn terminate_roblox_at_startup() -> usize {
+    |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `atomic_write` is never used
+   --> ../mizuauto-rust/src/platform.rs:494:8
+    |
+494 | pub fn atomic_write(path: &Path, contents: &[u8]) -> io::Result<()> {
+    |        ^^^^^^^^^^^^
+
+warning: function `open_url` is never used
+   --> ../mizuauto-rust/src/platform.rs:512:8
+    |
+512 | pub fn open_url(url: &str) -> io::Result<()> {
+    |        ^^^^^^^^
+
+warning: function `set_startup` is never used
+   --> ../mizuauto-rust/src/platform.rs:523:8
+    |
+523 | pub fn set_startup(enabled: bool, exe: &Path) -> io::Result<()> {
+    |        ^^^^^^^^^^^
+
+warning: struct `RobloxMutex` is never constructed
+   --> ../mizuauto-rust/src/platform.rs:571:12
+    |
+571 | pub struct RobloxMutex {
+    |            ^^^^^^^^^^^
+
+warning: associated items `create`, `try_acquire`, `is_owned`, and `release` are never used
+   --> ../mizuauto-rust/src/platform.rs:576:12
+    |
+575 | impl RobloxMutex {
+    | ---------------- associated items in this implementation
+576 |     pub fn create() -> io::Result<Self> {
+    |            ^^^^^^
+...
+588 |     pub fn try_acquire(&mut self) -> bool {
+    |            ^^^^^^^^^^^
+...
+595 |     pub fn is_owned(&self) -> bool {
+    |            ^^^^^^^^
+...
+598 |     pub fn release(&mut self) {
+    |            ^^^^^^^
+
+warning: function `dpapi` is never used
+   --> ../mizuauto-rust/src/platform.rs:613:4
+    |
+613 | fn dpapi(input: &[u8], entropy: &[u8], protect: bool, local_machine: bool) -> io::Result<Vec<u8>> {
+    |    ^^^^^
+
+warning: function `dpapi_unprotect` is never used
+   --> ../mizuauto-rust/src/platform.rs:662:8
+    |
+662 | pub fn dpapi_unprotect(input: &[u8], entropy: &[u8]) -> io::Result<Vec<u8>> {
+    |        ^^^^^^^^^^^^^^^
+
+warning: function `dpapi_protect` is never used
+   --> ../mizuauto-rust/src/platform.rs:665:8
+    |
+665 | pub fn dpapi_protect(input: &[u8], entropy: &[u8]) -> io::Result<Vec<u8>> {
+    |        ^^^^^^^^^^^^^
+
+warning: function `TerminateProcess` is never used
+  --> ../mizuauto-rust/src/platform.rs:79:8
+   |
+79 |     fn TerminateProcess(handle: Handle, exit_code: u32) -> i32;
+   |        ^^^^^^^^^^^^^^^^
+
+warning: function `MoveFileExW` is never used
+   --> ../mizuauto-rust/src/platform.rs:108:8
+    |
+108 |     fn MoveFileExW(source: *const u16, target: *const u16, flags: u32) -> i32;
+    |        ^^^^^^^^^^^
+
+warning: function `CreateMutexW` is never used
+   --> ../mizuauto-rust/src/platform.rs:109:8
+    |
+109 |     fn CreateMutexW(attributes: *const u8, initial_owner: i32, name: *const u16) -> Handle;
+    |        ^^^^^^^^^^^^
+
+warning: function `WaitForSingleObject` is never used
+   --> ../mizuauto-rust/src/platform.rs:110:8
+    |
+110 |     fn WaitForSingleObject(handle: Handle, milliseconds: u32) -> u32;
+    |        ^^^^^^^^^^^^^^^^^^^
+
+warning: function `ReleaseMutex` is never used
+   --> ../mizuauto-rust/src/platform.rs:111:8
+    |
+111 |     fn ReleaseMutex(handle: Handle) -> i32;
+    |        ^^^^^^^^^^^^
+
+warning: function `LocalFree` is never used
+   --> ../mizuauto-rust/src/platform.rs:112:8
+    |
+112 |     fn LocalFree(memory: isize) -> isize;
+    |        ^^^^^^^^^
+
+warning: function `CryptUnprotectData` is never used
+   --> ../mizuauto-rust/src/platform.rs:134:8
+    |
+134 |     fn CryptUnprotectData(
+    |        ^^^^^^^^^^^^^^^^^^
+
+warning: function `CryptProtectData` is never used
+   --> ../mizuauto-rust/src/platform.rs:143:8
+    |
+143 |     fn CryptProtectData(
+    |        ^^^^^^^^^^^^^^^^
+
+warning: function `ShellExecuteW` is never used
+   --> ../mizuauto-rust/src/platform.rs:156:8
+    |
+156 |     fn ShellExecuteW(
+    |        ^^^^^^^^^^^^^
+
+warning: function `RegCreateKeyExW` is never used
+   --> ../mizuauto-rust/src/platform.rs:168:8
+    |
+168 |     fn RegCreateKeyExW(
+    |        ^^^^^^^^^^^^^^^
+
+warning: function `RegSetValueExW` is never used
+   --> ../mizuauto-rust/src/platform.rs:179:8
+    |
+179 |     fn RegSetValueExW(
+    |        ^^^^^^^^^^^^^^
+
+warning: function `RegDeleteValueW` is never used
+   --> ../mizuauto-rust/src/platform.rs:187:8
+    |
+187 |     fn RegDeleteValueW(key: Handle, name: *const u16) -> i32;
+    |        ^^^^^^^^^^^^^^^
+
+warning: function `RegCloseKey` is never used
+   --> ../mizuauto-rust/src/platform.rs:188:8
+    |
+188 |     fn RegCloseKey(key: Handle) -> i32;
+    |        ^^^^^^^^^^^
+
+warning: `mizuauto-engine` (lib) generated 26 warnings
+    Finished `release` profile [optimized] target(s) in 6.28s

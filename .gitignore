@@ -1,0 +1,15 @@
+**/target/
+**/artifacts/
+**/bin/
+**/obj/
+**/packages/
+**/__pycache__/
+**/.pytest_cache/
+*.user
+AccountData.json*
+RAMSettings.ini
+RAMTheme.ini
+state.json
+startup-error.log
+diagnostics-result.txt
+log.txt

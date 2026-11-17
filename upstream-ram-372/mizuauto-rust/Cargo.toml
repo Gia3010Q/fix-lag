@@ -1,0 +1,48 @@
+[package]
+name = "mizuauto"
+version = "0.1.0"
+edition = "2024"
+build = "build.rs"
+license = "GPL-3.0-only"
+description = "Mizuauto native Roblox account manager"
+
+[[bin]]
+name = "mizuauto"
+path = "src/main.rs"
+
+[lib]
+name = "mizuauto_engine"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+eframe = { version = "0.37.0", default-features = false, features = ["default_fonts", "system_fonts", "glow"] }
+image = { version = "0.25", default-features = false, features = ["png", "jpeg", "gif", "webp", "ico"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+reqwest = { version = "0.12", default-features = false, features = ["blocking", "json", "rustls-tls"] }
+chrono = { version = "0.4", features = ["serde"] }
+argon2 = "0.6"
+xsalsa20poly1305 = "0.9"
+rand = "0.9"
+sha2 = "0.10"
+zeroize = "1"
+rfd = "0.16"
+percent-encoding = "2"
+alhazen-core = { version = "=0.7.2", default-features = false, features = ["native", "media-foundation"] }
+wry = { version = "0.57.1", default-features = false }
+windows = { version = "0.62", features = [
+  "Win32_Foundation", "Win32_System_Threading", "Win32_System_ProcessStatus",
+  "Win32_System_Diagnostics_ToolHelp", "Win32_UI_WindowsAndMessaging",
+  "Win32_Security_Cryptography", "Win32_System_Registry", "Win32_UI_Shell"
+] }
+
+[build-dependencies]
+winres = "0.1.12"
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+strip = "symbols"
+panic = "abort"

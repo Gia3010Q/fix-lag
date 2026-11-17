@@ -1,0 +1,3 @@
+PASS PowerShell syntax: /workspace/Mizuauto-standalone/upstream-ram-372/installer/Install-Mizuauto.ps1
+PASS PowerShell syntax: /workspace/Mizuauto-standalone/upstream-ram-372/build-standalone.ps1
+PASS PowerShell syntax: /workspace/Mizuauto-standalone/upstream-ram-372/installer/New-PackageManifest.ps1
