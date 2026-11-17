@@ -26,6 +26,8 @@ try {
     & msbuild (Join-Path $root 'RBX Alt Manager\RBX Alt Manager.csproj') /t:Rebuild /p:Configuration=Release /p:Platform=AnyCPU /p:PlatformTarget=x64 /p:Prefer32Bit=false /p:CefSharpAnyCpuSupport=false /p:MizuSkipLegacyNugetOutput=true "/p:OutputPath=$stage\"
     if ($LASTEXITCODE -ne 0) { throw 'WinForms build failed.' }
     Copy-Item (Join-Path $root 'mizuauto-engine\target\x86_64-pc-windows-msvc\release\mizuauto_engine.dll') $stage
+    Copy-Item (Join-Path $root 'RBX Alt Manager\Resources\libsodium.dll') (Join-Path $stage 'libsodium.dll') -Force
+    Copy-Item (Join-Path $root 'RBX Alt Manager\Resources\libsodium.dll') (Join-Path $stage 'libsodium-64.dll') -Force
     foreach ($name in @('mizuauto.exe', 'mizuauto_engine.dll')) {
         if (-not (Test-Path (Join-Path $stage $name))) { throw "Missing build artifact: $name" }
     }
