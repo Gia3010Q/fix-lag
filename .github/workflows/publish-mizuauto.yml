@@ -1,0 +1,55 @@
+name: Publish Mizuauto Windows test
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - release-upload-3.7.2.2-test
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    if: github.event_name != 'push' || !github.event.deleted
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Assemble and verify the prebuilt test package
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $manifest = Get-Content release-payload/manifest.json -Raw | ConvertFrom-Json
+          $destination = Join-Path $env:RUNNER_TEMP $manifest.filename
+          $output = [IO.File]::Create($destination)
+          try {
+            foreach ($part in $manifest.parts) {
+              $path = Join-Path $PWD "release-payload/$($part.name)"
+              if ((Get-FileHash $path -Algorithm SHA256).Hash -ne $part.sha256) { throw "Damaged part: $($part.name)" }
+              $inputStream = [IO.File]::OpenRead($path)
+              try { $inputStream.CopyTo($output) } finally { $inputStream.Dispose() }
+            }
+          } finally { $output.Dispose() }
+          if ((Get-FileHash $destination -Algorithm SHA256).Hash -ne $manifest.sha256) { throw 'Package SHA256 mismatch' }
+          if ((Get-Item $destination).Length -ne $manifest.bytes) { throw 'Package size mismatch' }
+          "MIZUAUTO_PACKAGE=$destination" >> $env:GITHUB_ENV
+      - name: Run diagnostics on Windows with synthetic data
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $directory = Join-Path $env:RUNNER_TEMP 'mizuauto-diagnostics'
+          Expand-Archive -LiteralPath $env:MIZUAUTO_PACKAGE -DestinationPath $directory
+          & (Join-Path $directory 'Mizuauto/Mizuauto.Diagnostics.exe')
+          if ($LASTEXITCODE -ne 0) { throw 'Windows diagnostics failed; release remains a draft' }
+      - name: Upload assets and publish the pre-release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          gh release upload v3.7.2.2-standalone-test $env:MIZUAUTO_PACKAGE release-payload/Mizuauto-Standalone-Test-3.7.2.2-source.zip release-payload/Mizuauto-Standalone-Test-3.7.2.2-win-x64.zip.sha256 release-payload/Mizuauto-Standalone-Test-3.7.2.2-source.zip.sha256 --clobber
+          if ($LASTEXITCODE -ne 0) { throw 'Release asset upload failed' }
+          gh release edit v3.7.2.2-standalone-test --draft=false --prerelease --latest=false
+          if ($LASTEXITCODE -ne 0) { throw 'Pre-release publication failed' }
