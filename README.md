@@ -4,9 +4,9 @@ Phiên bản Mizuauto chạy độc lập, có thư mục dữ liệu và khóa 
 
 ## Tải bản test
 
-**[Tải gói Windows x64 — ZIP khoảng 123 MB](https://github.com/Gia3010Q/Mizuauto-Standalone/releases/download/v3.7.2.2-standalone-test/Mizuauto-Standalone-Test-3.7.2.2-win-x64.zip)**
+**[Tải gói Windows x64 — ZIP khoảng 123 MB](https://github.com/Gia3010Q/fix-lag/releases/download/v3.7.2.2-standalone-test/Mizuauto-Standalone-Test-3.7.2.2-win-x64.zip)**
 
-[Trang Pre-release và mã nguồn tương ứng](https://github.com/Gia3010Q/Mizuauto-Standalone/releases/tag/v3.7.2.2-standalone-test)
+[Trang Pre-release và mã nguồn tương ứng](https://github.com/Gia3010Q/fix-lag/releases/tag/v3.7.2.2-standalone-test)
 
 1. Giải nén **toàn bộ** ZIP vào một thư mục riêng.
 2. Mở `mizuauto.exe` để thử ngay, hoặc `Cai-Mizuauto.cmd` để copy vào `%LOCALAPPDATA%\Programs\Mizuauto` và tạo shortcut Start Menu.
