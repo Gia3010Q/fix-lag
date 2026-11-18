@@ -1,0 +1,37 @@
+name: Native Windows browser regression
+on:
+  push:
+    branches: ['browser-validation-*']
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: windows-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Prepare the verified runtime and updated application
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          gh release download v3.7.2.3-roblox-manager-test --repo Gia3010Q/fix-lag --pattern Roblox-Manager-3.7.2.3-win-x64.zip --dir $env:RUNNER_TEMP
+          if ($LASTEXITCODE -ne 0) { throw 'Runtime download failed' }
+          $zip = Join-Path $env:RUNNER_TEMP 'Roblox-Manager-3.7.2.3-win-x64.zip'
+          if ((Get-FileHash $zip).Hash -ne 'F67FB54F48D433EB052DC79CB75CCAD905A20E45FDE018C304EAD56EA3B33085') { throw 'Wrong original runtime package' }
+          Expand-Archive $zip (Join-Path $env:RUNNER_TEMP 'browser-validation')
+          $root = Join-Path $env:RUNNER_TEMP 'browser-validation/RobloxManager'
+          Copy-Item browser-test-payload/* $root -Force
+          "BROWSER_ROOT=$root" >> $env:GITHUB_ENV
+      - name: Run actual browser and cookie authentication checks
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $out = Join-Path $env:RUNNER_TEMP 'browser-output.log'
+          $err = Join-Path $env:RUNNER_TEMP 'browser-errors.log'
+          $p = Start-Process (Join-Path $env:BROWSER_ROOT 'RobloxManager.BrowserChecks.exe') -WorkingDirectory $env:BROWSER_ROOT -PassThru -RedirectStandardOutput $out -RedirectStandardError $err
+          if (-not $p.WaitForExit(150000)) { $p.Kill(); throw 'Browser timed out' }
+          Get-Content $out,$err -ErrorAction SilentlyContinue
+          Get-ChildItem "$env:TEMP/RobloxManager-BrowserChecks-*/cef-browser.log" -ErrorAction SilentlyContinue | ForEach-Object { Get-Content $_.FullName -Tail 40 }
+          if ($p.ExitCode -ne 0) { throw 'Browser or account-import regression failed' }
