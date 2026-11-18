@@ -684,8 +684,13 @@ namespace RBX_Alt_Manager
             AccountsView.InvokeIfRequired(() => AccountsView.UpdateObject(account));
 
         public static Account AddAccount(string SecurityToken, string Password = "", string AccountJSON = null)
+            => AddAccount(SecurityToken, out _, Password, AccountJSON);
+
+        public static Account AddAccount(string SecurityToken, out string error, string Password = "", string AccountJSON = null)
         {
             Account account = new Account(SecurityToken, AccountJSON);
+            error = account.LoginError;
+            SecurityToken = account.SecurityToken;
 
             if (account.Valid)
             {
@@ -1380,32 +1385,14 @@ namespace RBX_Alt_Manager
 
         private async void Add_Click(object sender, EventArgs e)
         {
-            if (PuppeteerSupported)
+            Add.Enabled = false;
+            try
             {
-                Add.Enabled = false;
-
-                try { await new AccountBrowser().Login(); }
-                catch (Exception x)
-                {
-                    Program.Logger.Error($"[Add_Click] An error was encountered attempting to login: {x}");
-
-                    if (Utilities.YesNoPrompt($"An error was encountered attempting to login", "You may have a corrupted chromium installation", "Would you like to re-install chromium?", false))
-                    {
-                        MessageBox.Show("Roblox Manager will now close since it can't delete the folder while it's in use.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                        if (Directory.GetFiles(AccountBrowser.Fetcher.DownloadsFolder).Length <= 1 && Directory.GetDirectories(AccountBrowser.Fetcher.DownloadsFolder).Length <= 1)
-                            Process.Start("cmd.exe", $"/c rmdir /s /q \"{AccountBrowser.Fetcher.DownloadsFolder}\"");
-                        else
-                            Process.Start("explorer.exe", "/select, " + AccountBrowser.Fetcher.DownloadsFolder);
-
-                        Environment.Exit(0);
-                    }
-                }
-
-                Add.Enabled = true;
+                if (PuppeteerSupported) await new AccountBrowser().Login();
+                else await CefBrowser.Instance.LoginAsync();
             }
-            else
-                CefBrowser.Instance.Login();
+            catch (Exception error) { BrowserRuntime.ReportError(this, error); }
+            finally { Add.Enabled = true; }
         }
 
         private void DownloadProgressBar_Click(object sender, EventArgs e)
@@ -1884,23 +1871,25 @@ namespace RBX_Alt_Manager
 
         private void JoinDiscord_Click(object sender, EventArgs e) => Process.Start("https://discord.com/users/598301893877432341");
 
-        private void OpenBrowser_Click(object sender, EventArgs e)
+        private async void OpenBrowser_Click(object sender, EventArgs e)
         {
             if (PuppeteerSupported)
                 foreach (Account account in AccountsView.SelectedObjects)
                     new AccountBrowser(account);
             else if (!PuppeteerSupported && SelectedAccount != null)
-                CefBrowser.Instance.EnterBrowserMode(SelectedAccount);
+                try { await CefBrowser.Instance.EnterBrowserModeAsync(SelectedAccount); }
+                catch (Exception error) { BrowserRuntime.ReportError(this, error); }
         }
 
-        private void customURLToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void customURLToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (Uri.TryCreate(ShowDialog("URL", "Open Browser"), UriKind.Absolute, out Uri Link))
                 if (PuppeteerSupported)
                     foreach (Account account in AccountsView.SelectedObjects)
                         new AccountBrowser(account, Link.ToString(), string.Empty);
                 else if (!PuppeteerSupported && SelectedAccount != null)
-                    CefBrowser.Instance.EnterBrowserMode(SelectedAccount, Link.ToString());
+                    try { await CefBrowser.Instance.EnterBrowserModeAsync(SelectedAccount, Link.ToString()); }
+                    catch (Exception error) { BrowserRuntime.ReportError(this, error); }
         }
 
         private void URLJSToolStripMenuItem_Click(object sender, EventArgs e)

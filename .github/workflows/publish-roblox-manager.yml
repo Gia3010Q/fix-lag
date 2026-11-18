@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - 'release-upload-3.7.2.3-*'
+      - 'release-upload-3.7.2.4-*'
 
 permissions:
   contents: write
@@ -43,11 +43,25 @@ jobs:
           Expand-Archive -LiteralPath $env:MANAGER_PACKAGE -DestinationPath $directory
           $root = Join-Path $directory 'RobloxManager'
           $version = [Diagnostics.FileVersionInfo]::GetVersionInfo((Join-Path $root 'RobloxManager.exe'))
-          if ($version.ProductName -ne 'Roblox Manager' -or $version.FileDescription -ne 'Roblox Manager' -or $version.FileVersion -ne '3.7.2.3') { throw 'Wrong executable branding/version' }
+          if ($version.ProductName -ne 'Roblox Manager' -or $version.FileDescription -ne 'Roblox Manager' -or $version.FileVersion -ne '3.7.2.4') { throw 'Wrong executable branding/version' }
           if (Test-Path (Join-Path $root 'mizuauto.exe')) { throw 'Old executable bundled' }
           & (Join-Path $root 'RobloxManager.Diagnostics.exe')
           if ($LASTEXITCODE -ne 0) { throw 'Windows diagnostics failed; release remains a draft' }
           "MANAGER_TEST_ROOT=$root" >> $env:GITHUB_ENV
+      - name: Open the actual browser and verify cookie login with synthetic fixtures
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $root = $env:MANAGER_TEST_ROOT
+          $output = Join-Path $env:RUNNER_TEMP 'browser-checks.log'
+          $errors = Join-Path $env:RUNNER_TEMP 'browser-checks-errors.log'
+          $process = Start-Process -FilePath (Join-Path $root 'RobloxManager.BrowserChecks.exe') -WorkingDirectory $root -PassThru -RedirectStandardOutput $output -RedirectStandardError $errors
+          if (-not $process.WaitForExit(150000)) { $process.Kill(); throw 'Browser checks timed out' }
+          Get-Content $output,$errors -ErrorAction SilentlyContinue
+          if ($process.ExitCode -ne 0) {
+            Get-ChildItem "$env:TEMP/RobloxManager-BrowserChecks-*/cef-browser.log" -ErrorAction SilentlyContinue | ForEach-Object { Get-Content $_.FullName -Tail 40 }
+            throw 'Actual browser/cookie checks failed; release remains a draft'
+          }
       - name: Verify installer and shortcut migration with a synthetic profile
         shell: pwsh
         run: |

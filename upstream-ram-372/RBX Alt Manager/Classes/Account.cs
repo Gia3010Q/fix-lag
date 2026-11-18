@@ -107,23 +107,46 @@ namespace RBX_Alt_Manager
 
         public Account() { }
 
+        [JsonIgnore] public string LoginError { get; private set; }
+
         public Account(string Cookie, string AccountJSON = null)
         {
-            SecurityToken = Cookie;
-            
-            AccountJSON ??= AccountManager.MainClient.Execute(MakeRequest("my/account/json", Method.Get)).Content;
-
-            if (!string.IsNullOrEmpty(AccountJSON) && Utilities.TryParseJson(AccountJSON, out AccountJson Data))
+            if (!CookieAuthentication.TryNormalize(Cookie, out string normalized))
             {
-                Username = Data.Name;
-                UserID = Data.UserId;
-
-                Valid = true;
-
-                LastUse = DateTime.Now;
-
-                AccountManager.LastValidAccount = this;
+                LoginError = "Cookie trống hoặc sai định dạng. Dán giá trị .ROBLOSECURITY hoặc .ROBLOSECURITY=...";
+                return;
             }
+            SecurityToken = normalized;
+            if (AccountJSON == null)
+            {
+                try
+                {
+                    var request = MakeRequest(CookieAuthentication.AuthenticatedPath, Method.Get);
+                    request.Timeout = 20000;
+                    var response = AccountManager.UsersClient.Execute(request);
+                    if (response.StatusCode != HttpStatusCode.OK)
+                    {
+                        LoginError = CookieAuthentication.ResponseError((int)response.StatusCode);
+                        return;
+                    }
+                    AccountJSON = response.Content;
+                }
+                catch
+                {
+                    LoginError = CookieAuthentication.ResponseError(0);
+                    return;
+                }
+            }
+            if (!CookieAuthentication.TryReadIdentity(AccountJSON, out long userId, out string username))
+            {
+                LoginError = "Roblox trả về dữ liệu tài khoản không hợp lệ. Thử lại hoặc kiểm tra kết nối.";
+                return;
+            }
+            Username = username;
+            UserID = userId;
+            Valid = true;
+            LastUse = DateTime.Now;
+            AccountManager.LastValidAccount = this;
         }
 
         public RestRequest MakeRequest(string url, Method method = Method.Get) => new RestRequest(url, method).AddCookie(".ROBLOSECURITY", SecurityToken, "/", ".roblox.com");

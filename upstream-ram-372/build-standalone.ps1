@@ -42,6 +42,10 @@ try {
     Copy-Item $sodiumManaged (Join-Path $stage 'Sodium.dll') -Force
     & $compiler /nologo /target:exe /platform:x64 "/reference:$sodiumManaged" "/out:$stage\RobloxManager.Diagnostics.exe" (Join-Path $root 'tests\Diagnostics.cs') (Join-Path $root 'tests\IsolationChecks.cs') (Join-Path $root 'RBX Alt Manager\Classes\AppIdentity.cs') (Join-Path $root 'RBX Alt Manager\Classes\ApiAuthentication.cs') (Join-Path $root 'RBX Alt Manager\Classes\Cryptography.cs')
     if ($LASTEXITCODE -ne 0) { throw 'Diagnostics build failed.' }
+    $browserChecksReferences = @('/reference:' + (Join-Path $stage 'RobloxManager.exe')) + @(Get-ChildItem -LiteralPath $stage -Filter '*.dll' | Where-Object { try { [Reflection.AssemblyName]::GetAssemblyName($_.FullName) | Out-Null; $true } catch { $false } } | ForEach-Object { '/reference:' + $_.FullName })
+    & $compiler /nologo /target:exe /platform:x64 $browserChecksReferences "/out:$stage\RobloxManager.BrowserChecks.exe" (Join-Path $root 'tests\BrowserChecks.cs')
+    if ($LASTEXITCODE -ne 0) { throw 'Browser checks build failed.' }
+    Copy-Item (Join-Path $stage 'RobloxManager.exe.config') (Join-Path $stage 'RobloxManager.BrowserChecks.exe.config') -Force
     $crtRoot = $env:VCToolsRedistDir
     if (-not $crtRoot) {
         $vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\Installer\vswhere.exe'

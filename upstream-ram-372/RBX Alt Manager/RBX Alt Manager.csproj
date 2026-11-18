@@ -507,6 +507,8 @@
     <Compile Include="Classes\ProductInfo.cs" />
     <Compile Include="Classes\Program.cs" />
     <Compile Include="Classes\AppIdentity.cs" />
+    <Compile Include="Classes\BrowserRuntime.cs" />
+    <Compile Include="Classes\CookieAuthentication.cs" />
     <Compile Include="Classes\ApiAuthentication.cs" />
     <Compile Include="Forms\ThemeEditor.cs">
       <SubType>Form</SubType>

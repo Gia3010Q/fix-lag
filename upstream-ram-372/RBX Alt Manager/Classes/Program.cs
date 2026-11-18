@@ -125,7 +125,15 @@ namespace RBX_Alt_Manager
             // Do not take that shared lock here: it interferes with another account manager.
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new AccountManager());
+            try { Application.Run(new AccountManager()); }
+            finally
+            {
+                if (CefSharp.Cef.IsInitialized == true)
+                {
+                    RBX_Alt_Manager.Classes.CefBrowser.DisposeBrowser();
+                    CefSharp.Cef.Shutdown();
+                }
+            }
         }
     }
 }

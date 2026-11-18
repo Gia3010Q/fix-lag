@@ -40,28 +40,37 @@ namespace RBX_Alt_Manager.Classes
 
         public AccountBrowser(Account account, string Url = null, string Script = null, Func<Page, Task> PostNavigation = null)
         {
-            _ = LaunchBrowser(Url ?? string.Empty, Script: Script, PostNavigation: PostNavigation, PostPageCreation: () => page.SetCookieAsync(new CookieParam
+            _ = OpenAccountAsync(account, Url, Script, PostNavigation);
+        }
+
+        private async Task OpenAccountAsync(Account account, string Url, string Script, Func<Page, Task> PostNavigation)
+        {
+            try { await LaunchBrowser(Url ?? string.Empty, Script: Script, PostNavigation: PostNavigation, PostPageCreation: () => page.SetCookieAsync(new CookieParam
             {
                 Name = ".ROBLOSECURITY",
                 Domain = ".roblox.com",
-                Expires = (DateTime.Now.AddYears(1) - DateTime.MinValue).TotalSeconds,
+                Expires = (DateTime.UtcNow.AddYears(1) - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds,
                 HttpOnly = true,
                 Secure = true,
                 Url = "https://roblox.com",
                 Value = account.SecurityToken
-            }));
+            })); }
+            catch (Exception error)
+            {
+                AccountManager.Instance.InvokeIfRequired(() => BrowserRuntime.ReportError(AccountManager.Instance, error));
+            }
         }
 
         public async Task LaunchBrowser(string Url = "https://roblox.com/", Func<Task> PostPageCreation = null, Func<Page, Task> PostNavigation = null, string Script = null, string[] Arguments = null)
         {
             if (string.IsNullOrEmpty(Url)) Url = "https://roblox.com/";
 
-            if (Position != null && Index >= 0 && ScreenGrid != null && ScreenGrid.Count > 0)
-                Position = ScreenGrid[Index % (ScreenGrid.Count - 1)];
+            if (Index >= 0 && ScreenGrid != null && ScreenGrid.Count > 0)
+                Position = ScreenGrid[Index % ScreenGrid.Count];
             else
                 Position = new Vector2(Screen.PrimaryScreen.WorkingArea.Width / 2 - (Size.X / 2), Screen.PrimaryScreen.WorkingArea.Height / 2 - (Size.Y / 2));
 
-            List<string> Args = new List<string>(Arguments ?? new string[] { "--disable-web-security" });
+            List<string> Args = new List<string>(Arguments ?? new string[0]);
 
             string ExtensionPath = Path.Combine(Environment.CurrentDirectory, "extension");
             string ConfigPath = Path.Combine(Environment.CurrentDirectory, "BrowserConfig.json");
@@ -162,7 +171,7 @@ namespace RBX_Alt_Manager.Classes
                 foreach (var script in Config.PreNavigateScripts)
                     await page.EvaluateExpressionAsync(script);
 
-            if (PostPageCreation != null) try { await PostPageCreation(); } catch { }
+            if (PostPageCreation != null) await PostPageCreation();
 
             try { await page.GoToAsync(Url, new NavigationOptions { Referer = "https://google.com/", Timeout = 300000 }); } catch { }
 
@@ -326,7 +335,7 @@ namespace RBX_Alt_Manager.Classes
             else
             {
                 await page.WaitForNavigationAsync();
-                AccountManager.AddAccount(SecurityToken.Value, Password, await page.EvaluateFunctionAsync<string>("() => { return fetch('/my/account/json').then(x=>x.text()); }"));
+                AccountManager.AddAccount(SecurityToken.Value, Password, await page.EvaluateFunctionAsync<string>("() => { return fetch('https://users.roblox.com/v1/users/authenticated', {credentials: 'include'}).then(x=>x.ok ? x.text() : Promise.reject('Account validation failed')); }"));
             }
 
             Password = null;
@@ -346,127 +355,120 @@ namespace RBX_Alt_Manager.Classes
 
     internal class CefBrowser : Form
     {
-        public static CefBrowser Instance
-        {
-            get
-            {
-                BrowserForm ??= new CefBrowser();
-
-                return BrowserForm;
-            }
-        }
+        public static CefBrowser Instance => BrowserForm == null || BrowserForm.IsDisposed ? (BrowserForm = new CefBrowser()) : BrowserForm;
         private static CefBrowser BrowserForm;
+        internal static void DisposeBrowser() { if (BrowserForm != null && !BrowserForm.IsDisposed) BrowserForm.Dispose(); }
         public ChromiumWebBrowser browser { get; private set; }
-        public bool BrowserMode = false;
-        private string Password;
+        public bool BrowserMode = true;
+        private readonly System.Threading.SemaphoreSlim sessionGate = new System.Threading.SemaphoreSlim(1, 1);
+        private readonly Label status = new Label { Dock = DockStyle.Bottom, Height = 24, Text = "Đang mở trình duyệt..." };
+        private bool importing;
 
-        private CefBrowser(string Url = "https://roblox.com/")
+        private CefBrowser()
         {
-            if (!File.Exists(Path.Combine(AppIdentity.InstallDirectory, "libcef.dll"))) throw new DirectoryNotFoundException("Unable to locate CefSharp dependency folder");
-            if (!File.Exists(Path.Combine(AppIdentity.InstallDirectory, "CefSharp.dll"))) throw new FileNotFoundException("Unable to locate CefSharp.dll");
-
-            Size = new System.Drawing.Size(880, 740);
-
-            FormClosing += (s, e) =>
-            {
-                e.Cancel = true;
-                Hide();
-                Cef.GetGlobalCookieManager().DeleteCookies();
-            };
-
+            BrowserRuntime.Initialize();
+            Text = "Roblox Manager · Browser";
+            Size = new System.Drawing.Size(1000, 760);
             AccountManager.SetDarkBar(Handle);
-
-            browser = new ChromiumWebBrowser(Url);
+            browser = new ChromiumWebBrowser("about:blank") { Dock = DockStyle.Fill };
             browser.AddressChanged += OnNavigated;
-            browser.FrameLoadEnd += OnPageLoaded;
-
+            browser.LoadError += (sender, args) =>
+            {
+                if (args.ErrorCode == CefErrorCode.Aborted || !args.Frame.IsMain) return;
+                this.InvokeIfRequired(() => status.Text = "Không tải được trang: " + args.ErrorCode + ". Kiểm tra mạng/proxy.");
+            };
             Controls.Add(browser);
-        }
-
-        public void Login()
-        {
-            Cef.GetGlobalCookieManager().DeleteCookies();
-            
-            BrowserMode = false;
-
-            browser.Load("https://roblox.com/login");
-
-            Show();
-        }
-
-        public void EnterBrowserMode(Account account, string URL = null)
-        {
-            Cef.GetGlobalCookieManager().SetCookie("https://roblox.com", new CefSharp.Cookie()
+            Controls.Add(status);
+            FormClosing += async (sender, args) =>
             {
-                Name = ".ROBLOSECURITY",
-                Domain = ".roblox.com",
-                Expires = DateTime.Now.AddYears(1),
-                HttpOnly = true,
-                Secure = true,
-                Value = account.SecurityToken
-            });
-
-            BrowserMode = true;
-
-            browser.Load(URL ?? "https://roblox.com/home");
-
-            Show();
+                if (args.CloseReason != CloseReason.UserClosing) return;
+                args.Cancel = true;
+                Hide();
+                BrowserMode = true;
+                await sessionGate.WaitAsync();
+                try { if (!browser.IsDisposed) await Cef.GetGlobalCookieManager().DeleteCookiesAsync(); }
+                catch { }
+                finally { sessionGate.Release(); }
+            };
         }
 
-        private async void OnNavigated(object sender, AddressChangedEventArgs args)
+        private async Task WaitForBrowserAsync()
         {
-            Program.Logger.Info($"Browser Navigated to {args.Address}"); // someone has an issue where they land on a home page and nothing happens
-
-            string url = args.Address;
-
-            if (url.Contains("/home") && !BrowserMode)
+            Show();
+            BringToFront();
+            DateTime deadline = DateTime.UtcNow.AddSeconds(20);
+            while (!browser.IsBrowserInitialized)
             {
-                var cookieManager = Cef.GetGlobalCookieManager();
-
-                await cookieManager.VisitAllCookiesAsync().ContinueWith(t =>
-                {
-                    if (t.Status == TaskStatus.RanToCompletion)
-                    {
-                        List<CefSharp.Cookie> cookies = t.Result;
-
-                        CefSharp.Cookie RSec = cookies.Find(x => x.Name == ".ROBLOSECURITY");
-
-                        if (RSec != null)
-                        {
-                            AccountManager.AddAccount(RSec.Value, Password);
-
-                            Cef.GetGlobalCookieManager().DeleteCookies();
-
-                            this.InvokeIfRequired(() => Hide());
-                        }
-
-                        Password = string.Empty;
-                    }
-                });
+                if (IsDisposed || DateTime.UtcNow >= deadline) throw new TimeoutException("Browser initialization timed out");
+                await Task.Delay(50);
             }
         }
 
-        private void OnPageLoaded(object sender, FrameLoadEndEventArgs args)
+        public async Task LoginAsync()
         {
-            Task.Factory.StartNew(async () =>
+            await sessionGate.WaitAsync();
+            try
             {
-                await Task.Delay(200);
+                BrowserMode = true;
+                await WaitForBrowserAsync();
+                await browser.LoadUrlAsync("about:blank");
+                await Cef.GetGlobalCookieManager().DeleteCookiesAsync();
+                BrowserMode = false;
+                status.Text = "Đăng nhập Roblox trong cửa sổ này; tài khoản sẽ được thêm khi hoàn tất.";
+                browser.Load("https://www.roblox.com/login");
+            }
+            finally { sessionGate.Release(); }
+        }
 
-                while (Visible && args.Url == browser.Address)
+        public async Task EnterBrowserModeAsync(Account account, string url = null)
+        {
+            if (account == null || !CookieAuthentication.TryNormalize(account.SecurityToken, out string token))
+                throw new ArgumentException("Invalid account cookie");
+            await sessionGate.WaitAsync();
+            try
+            {
+                BrowserMode = true;
+                await WaitForBrowserAsync();
+                // Stop old account pages before replacing their cookies.
+                await browser.LoadUrlAsync("about:blank");
+                var cookies = Cef.GetGlobalCookieManager();
+                await cookies.DeleteCookiesAsync();
+                bool accepted = await cookies.SetCookieAsync("https://www.roblox.com/", new CefSharp.Cookie
                 {
-                    JavascriptResponse response = await browser.EvaluateScriptAsync("document.getElementById('login-password').value");
+                    Name = ".ROBLOSECURITY", Domain = ".roblox.com", Path = "/",
+                    Expires = DateTime.UtcNow.AddYears(1), HttpOnly = true, Secure = true, Value = token
+                });
+                if (!accepted) throw new InvalidOperationException("Browser rejected the cookie");
+                status.Text = "Tài khoản: " + account.Username;
+                browser.Load(url ?? "https://www.roblox.com/home");
+            }
+            finally { sessionGate.Release(); }
+        }
 
-                    if (!response.Success)
-                        response = await browser.EvaluateScriptAsync("document.getElementById('signup-password').value");
-
-                    if (response.Success)
-                        Password = (string)response.Result;
-
-                    await Task.Delay(50);
+        private void OnNavigated(object sender, AddressChangedEventArgs args)
+        {
+            if (!Uri.TryCreate(args.Address, UriKind.Absolute, out Uri uri) ||
+                !(uri.Host == "roblox.com" || uri.Host.EndsWith(".roblox.com", StringComparison.OrdinalIgnoreCase)) ||
+                !uri.AbsolutePath.TrimEnd('/').Equals("/home", StringComparison.OrdinalIgnoreCase)) return;
+            this.InvokeIfRequired(async () =>
+            {
+                if (BrowserMode || importing) return;
+                importing = true;
+                try
+                {
+                    var cookies = await Cef.GetGlobalCookieManager().VisitAllCookiesAsync();
+                    var cookie = cookies.Find(x => x.Name == ".ROBLOSECURITY" && x.Domain.TrimStart('.').Equals("roblox.com", StringComparison.OrdinalIgnoreCase));
+                    if (cookie == null) return;
+                    string error = null;
+                    Account added = await Task.Run(() => AccountManager.AddAccount(cookie.Value, out error));
+                    if (added == null) { status.Text = error ?? "Không thêm được tài khoản."; return; }
+                    BrowserMode = true;
+                    await Cef.GetGlobalCookieManager().DeleteCookiesAsync();
+                    Hide();
                 }
+                catch (Exception error) { BrowserRuntime.ReportError(this, error); }
+                finally { importing = false; }
             });
-
-            browser.ExecuteScriptAsyncWhenPageLoaded(@"document.body.classList.remove(""light-theme"");document.body.classList.add(""dark-theme"");");
         }
     }
 

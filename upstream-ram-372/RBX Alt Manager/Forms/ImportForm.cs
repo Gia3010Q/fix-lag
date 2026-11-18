@@ -1,6 +1,7 @@
 ﻿using RBX_Alt_Manager.Forms;
 using System;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace RBX_Alt_Manager
@@ -13,6 +14,7 @@ namespace RBX_Alt_Manager
 
             InitializeComponent();
             this.Rescale();
+            Text = "Roblox Manager · Nhập cookie";
         }
 
         public void ApplyTheme()
@@ -70,20 +72,31 @@ namespace RBX_Alt_Manager
             Hide();
         }
 
-        private void ImportButton_Click(object sender, EventArgs e)
+        private async void ImportButton_Click(object sender, EventArgs e)
         {
-            string[] List = Accounts.Text.Split('\n');
-
-            Accounts.Text = string.Empty;
-
-            foreach (string Token in List)
+            string[] lines = Accounts.Text.Split('\n');
+            Accounts.Clear();
+            Accounts.ReadOnly = true;
+            ImportButton.Enabled = false;
+            try
             {
-                Account NewAccount = AccountManager.AddAccount(Token);
-
-                if (NewAccount != null)
-                    Accounts.Text += $"Added {NewAccount.Username}";
-                else
-                    Accounts.Text += $"Failed to add {Token}";
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    if (string.IsNullOrWhiteSpace(lines[i])) continue;
+                    string input = lines[i];
+                    string error = null;
+                    Account account = null;
+                    try { account = await Task.Run(() => AccountManager.AddAccount(input, out error)); }
+                    catch { error = "Không thêm được tài khoản. Kiểm tra mạng rồi thử lại."; }
+                    // Never echo the session token into the result or a diagnostic log.
+                    Accounts.AppendText(account != null ? "Đã thêm " + account.Username + "\r\n" :
+                        "Dòng " + (i + 1) + ": " + error + "\r\n");
+                }
+            }
+            finally
+            {
+                Accounts.ReadOnly = false;
+                ImportButton.Enabled = true;
             }
         }
     }
