@@ -5,7 +5,7 @@ $root = (Resolve-Path -LiteralPath $PackageDirectory).Path.TrimEnd($separator) +
 $entries = @()
 foreach ($file in Get-ChildItem -LiteralPath $PackageDirectory -File -Recurse | Sort-Object FullName) {
     if ($file.Name -eq 'package-manifest.json') { continue }
-    if ($file.Name -in @('AccountData.json', 'AccountData.json.backup', 'RAMSettings.ini', 'RAMTheme.ini', 'state.json', 'startup-error.log', 'diagnostics-result.txt', 'log.txt')) {
+    if ($file.Name -in @('AccountData.json', 'AccountData.json.backup', 'RAMSettings.ini', 'RAMTheme.ini', 'state.json', 'startup-error.log', 'diagnostics-result.txt', 'browser-checks-result.txt', 'browser-error.log', 'cef-browser.log', 'log.txt')) {
         throw "User data or logs must not be packaged: $($file.FullName)"
     }
     $entries += @{ path = $file.FullName.Substring($root.Length); sha256 = (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash }

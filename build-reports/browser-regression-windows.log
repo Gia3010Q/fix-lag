@@ -1,0 +1,134 @@
+browser	Set up job	﻿2026-11-18T19:15:21.8789468Z Current runner version: '2.338.2'
+browser	Set up job	2026-11-18T19:15:21.8840270Z ##[group]Runner Image Provisioner
+browser	Set up job	2026-11-18T19:15:21.8840786Z Hosted Compute Agent
+browser	Set up job	2026-11-18T19:15:21.8841128Z Version: 20261111.635
+browser	Set up job	2026-11-18T19:15:21.8841501Z Commit: b8a594ea514ff44cadb5342986c68b1eac6e22ed
+browser	Set up job	2026-11-18T19:15:21.8841897Z Build Date: 2026-11-11T01:49:01Z
+browser	Set up job	2026-11-18T19:15:21.8842287Z Worker ID: {e3e88bd3-6224-48f4-8629-0623c3407dbf}
+browser	Set up job	2026-11-18T19:15:21.8842669Z Region: centralus
+browser	Set up job	2026-11-18T19:15:21.8842964Z Cloud: Azure
+browser	Set up job	2026-11-18T19:15:21.8843275Z ##[endgroup]
+browser	Set up job	2026-11-18T19:15:21.8844010Z ##[group]Operating System
+browser	Set up job	2026-11-18T19:15:21.8844358Z Microsoft Windows Server 2025
+browser	Set up job	2026-11-18T19:15:21.8844683Z 10.0.26100
+browser	Set up job	2026-11-18T19:15:21.8844985Z Datacenter
+browser	Set up job	2026-11-18T19:15:21.8845273Z ##[endgroup]
+browser	Set up job	2026-11-18T19:15:21.8845562Z ##[group]Runner Image
+browser	Set up job	2026-11-18T19:15:21.8845950Z Image: windows-2025-vs2026
+browser	Set up job	2026-11-18T19:15:21.8846792Z Version: 20261116.315.1
+browser	Set up job	2026-11-18T19:15:21.8847419Z Included Software: https://github.com/actions/runner-images/blob/win25-vs2026/20261116.315/images/windows/Windows2025-VS2026-Readme.md
+browser	Set up job	2026-11-18T19:15:21.8848575Z Image Release: https://github.com/actions/runner-images/releases/tag/win25-vs2026%2F20261116.315
+browser	Set up job	2026-11-18T19:15:21.8849110Z ##[endgroup]
+browser	Set up job	2026-11-18T19:15:21.8849722Z ##[group]GITHUB_TOKEN Permissions
+browser	Set up job	2026-11-18T19:15:21.8850993Z Contents: read
+browser	Set up job	2026-11-18T19:15:21.8851299Z Metadata: read
+browser	Set up job	2026-11-18T19:15:21.8851626Z ##[endgroup]
+browser	Set up job	2026-11-18T19:15:21.8852975Z Secret source: Actions
+browser	Set up job	2026-11-18T19:15:21.8853440Z Cache mode: write
+browser	Set up job	2026-11-18T19:15:21.8853861Z Prepare workflow directory
+browser	Set up job	2026-11-18T19:15:21.9093750Z Prepare all required actions
+browser	Set up job	2026-11-18T19:15:21.9135237Z Getting action download info
+browser	Set up job	2026-11-18T19:15:22.1775021Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+browser	Set up job	2026-11-18T19:15:22.3645375Z Complete job name: browser
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	﻿2026-11-18T19:15:22.4826704Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:22.4827572Z with:
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:22.4827808Z   repository: Gia3010Q/fix-lag
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:22.4829819Z   token: ***
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:22.4830044Z   ssh-strict: true
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:22.4830272Z   ssh-user: git
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:22.4830508Z   persist-credentials: true
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:22.4830760Z   clean: true
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:22.4830994Z   sparse-checkout-cone-mode: true
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:22.4831269Z   fetch-depth: 1
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:22.4831491Z   fetch-tags: false
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:22.4831724Z   show-progress: true
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:22.4831963Z   lfs: false
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:22.4832176Z   submodules: false
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:22.4832413Z   set-safe-directory: true
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:22.4832754Z ##[endgroup]
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:22.5828691Z Syncing repository: Gia3010Q/fix-lag
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:22.5829891Z ##[group]Getting Git version info
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:22.5830223Z Working directory is 'D:\a\fix-lag\fix-lag'
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:22.6354119Z [command]"C:\Program Files\Git\bin\git.exe" version
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:22.9821522Z git version 2.56.1.windows.1
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:22.9861811Z ##[endgroup]
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:22.9875624Z Temporarily overriding HOME='D:\a\_temp\bd4c5326-d206-4701-8dce-cb520de84674' before making global git config changes
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:22.9882614Z Adding repository directory to the temporary git global config as a safe directory
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:22.9883792Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\fix-lag\fix-lag
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:23.0503303Z Deleting the contents of 'D:\a\fix-lag\fix-lag'
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:23.0507501Z ##[group]Initializing the repository
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:23.0514115Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\fix-lag\fix-lag
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:23.1328219Z Initialized empty Git repository in D:/a/fix-lag/fix-lag/.git/
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:23.1367995Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/Gia3010Q/fix-lag
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:23.1957855Z ##[endgroup]
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:23.1958499Z ##[group]Disabling automatic garbage collection
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:23.1964861Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:23.2226312Z ##[endgroup]
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:23.2226778Z ##[group]Setting up auth
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:23.2235034Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:23.2495003Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:24.7231885Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:24.7497945Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:25.1800105Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:25.2074086Z ##[endgroup]
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:25.2082957Z ##[group]Fetching the repository
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:25.2083632Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +de589144ddb535578b404aff25cd0e759c6d92d6:refs/remotes/origin/browser-validation-3.7.2.4
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:26.6047612Z From https://github.com/Gia3010Q/fix-lag
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:26.6048348Z  * [new ref]         de589144ddb535578b404aff25cd0e759c6d92d6 -> origin/browser-validation-3.7.2.4
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:26.6082482Z ##[endgroup]
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:26.6082962Z ##[group]Determining the checkout info
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:26.6083434Z ##[endgroup]
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:26.6091533Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:26.6486734Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:26.6751898Z ##[group]Checking out the ref
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:26.6759336Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B browser-validation-3.7.2.4 refs/remotes/origin/browser-validation-3.7.2.4
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:26.7883006Z Switched to a new branch 'browser-validation-3.7.2.4'
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:26.8071204Z branch 'browser-validation-3.7.2.4' set up to track 'origin/browser-validation-3.7.2.4'.
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:26.8115800Z ##[endgroup]
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:26.8471523Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+browser	Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:26.8721969Z de589144ddb535578b404aff25cd0e759c6d92d6
+browser	Prepare the verified runtime and updated application	﻿2026-11-18T19:15:26.9049984Z ##[group]Run $ErrorActionPreference = 'Stop'
+browser	Prepare the verified runtime and updated application	2026-11-18T19:15:26.9050324Z [36;1m$ErrorActionPreference = 'Stop'[0m
+browser	Prepare the verified runtime and updated application	2026-11-18T19:15:26.9050760Z [36;1mgh release download v3.7.2.3-roblox-manager-test --repo Gia3010Q/fix-lag --pattern Roblox-Manager-3.7.2.3-win-x64.zip --dir $env:RUNNER_TEMP[0m
+browser	Prepare the verified runtime and updated application	2026-11-18T19:15:26.9051208Z [36;1mif ($LASTEXITCODE -ne 0) { throw 'Runtime download failed' }[0m
+browser	Prepare the verified runtime and updated application	2026-11-18T19:15:26.9051494Z [36;1m$zip = Join-Path $env:RUNNER_TEMP 'Roblox-Manager-3.7.2.3-win-x64.zip'[0m
+browser	Prepare the verified runtime and updated application	2026-11-18T19:15:26.9051912Z [36;1mif ((Get-FileHash $zip).Hash -ne 'F67FB54F48D433EB052DC79CB75CCAD905A20E45FDE018C304EAD56EA3B33085') { throw 'Wrong original runtime package' }[0m
+browser	Prepare the verified runtime and updated application	2026-11-18T19:15:26.9052342Z [36;1mExpand-Archive $zip (Join-Path $env:RUNNER_TEMP 'browser-validation')[0m
+browser	Prepare the verified runtime and updated application	2026-11-18T19:15:26.9052614Z [36;1m$root = Join-Path $env:RUNNER_TEMP 'browser-validation/RobloxManager'[0m
+browser	Prepare the verified runtime and updated application	2026-11-18T19:15:26.9052849Z [36;1mCopy-Item browser-test-payload/* $root -Force[0m
+browser	Prepare the verified runtime and updated application	2026-11-18T19:15:26.9053076Z [36;1m"BROWSER_ROOT=$root" >> $env:GITHUB_ENV[0m
+browser	Prepare the verified runtime and updated application	2026-11-18T19:15:26.9787372Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+browser	Prepare the verified runtime and updated application	2026-11-18T19:15:26.9787625Z env:
+browser	Prepare the verified runtime and updated application	2026-11-18T19:15:26.9790115Z   GH_TOKEN: ***
+browser	Prepare the verified runtime and updated application	2026-11-18T19:15:26.9790234Z ##[endgroup]
+browser	Run actual browser and cookie authentication checks	﻿2026-11-18T19:15:35.8538066Z ##[group]Run $ErrorActionPreference = 'Stop'
+browser	Run actual browser and cookie authentication checks	2026-11-18T19:15:35.8538355Z [36;1m$ErrorActionPreference = 'Stop'[0m
+browser	Run actual browser and cookie authentication checks	2026-11-18T19:15:35.8538553Z [36;1m$out = Join-Path $env:RUNNER_TEMP 'browser-output.log'[0m
+browser	Run actual browser and cookie authentication checks	2026-11-18T19:15:35.8538785Z [36;1m$err = Join-Path $env:RUNNER_TEMP 'browser-errors.log'[0m
+browser	Run actual browser and cookie authentication checks	2026-11-18T19:15:35.8539259Z [36;1m$p = Start-Process (Join-Path $env:BROWSER_ROOT 'RobloxManager.BrowserChecks.exe') -WorkingDirectory $env:BROWSER_ROOT -PassThru -RedirectStandardOutput $out -RedirectStandardError $err[0m
+browser	Run actual browser and cookie authentication checks	2026-11-18T19:15:35.8539759Z [36;1mif (-not $p.WaitForExit(150000)) { $p.Kill(); throw 'Browser timed out' }[0m
+browser	Run actual browser and cookie authentication checks	2026-11-18T19:15:35.8540277Z [36;1mGet-Content $out,$err -ErrorAction SilentlyContinue[0m
+browser	Run actual browser and cookie authentication checks	2026-11-18T19:15:35.8540721Z [36;1mGet-ChildItem "$env:TEMP/RobloxManager-BrowserChecks-*/cef-browser.log" -ErrorAction SilentlyContinue | ForEach-Object { Get-Content $_.FullName -Tail 40 }[0m
+browser	Run actual browser and cookie authentication checks	2026-11-18T19:15:35.8541185Z [36;1mif ($p.ExitCode -ne 0) { throw 'Browser or account-import regression failed' }[0m
+browser	Run actual browser and cookie authentication checks	2026-11-18T19:15:35.8592062Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+browser	Run actual browser and cookie authentication checks	2026-11-18T19:15:35.8592281Z env:
+browser	Run actual browser and cookie authentication checks	2026-11-18T19:15:35.8592480Z   BROWSER_ROOT: D:\a\_temp\browser-validation\RobloxManager
+browser	Run actual browser and cookie authentication checks	2026-11-18T19:15:35.8592666Z ##[endgroup]
+browser	Run actual browser and cookie authentication checks	2026-11-18T19:15:39.8473702Z PASS: actual cookie account import, current endpoint, legacy fixture, normalization, HTTP failures and invalid JSON (synthetic only).
+browser	Run actual browser and cookie authentication checks	2026-11-18T19:15:39.8475618Z PASS: actual browser window renders a local page from a separate working directory; cookie injection/account switching and login reset work.
+browser	Run actual browser and cookie authentication checks	2026-11-18T19:15:39.8477851Z Browser diagnostic output: C:\Users\runneradmin\AppData\Local\Temp\RobloxManager-BrowserChecks-0689565a05854f76881225fb1c68eb24
+browser	Run actual browser and cookie authentication checks	2026-11-18T19:15:39.8683121Z [1118/191539.228:ERROR:command_buffer_proxy_impl.cc(128)] ContextResult::kTransientFailure: Failed to send GpuControl.CreateCommandBuffer.
+browser	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	﻿2026-11-18T19:15:39.9319323Z Post job cleanup.
+browser	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:40.0371244Z [command]"C:\Program Files\Git\bin\git.exe" version
+browser	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:40.0623340Z git version 2.56.1.windows.1
+browser	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:40.0671246Z Temporarily overriding HOME='D:\a\_temp\67498dc0-e4fb-481c-af63-f50490a94df3' before making global git config changes
+browser	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:40.0671932Z Adding repository directory to the temporary git global config as a safe directory
+browser	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:40.0678269Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\fix-lag\fix-lag
+browser	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:40.1012671Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+browser	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:40.1300863Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+browser	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:40.5444304Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+browser	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:40.5670228Z http.https://github.com/.extraheader
+browser	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:40.5706383Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+browser	Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683	2026-11-18T19:15:40.5967519Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+browser	Complete job	﻿2026-11-18T19:15:41.0048884Z Cleaning up orphan processes
+browser	Complete job	2026-11-18T19:15:41.0124883Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

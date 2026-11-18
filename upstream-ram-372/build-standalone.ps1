@@ -60,7 +60,7 @@ try {
     foreach ($name in @('vcruntime140.dll', 'msvcp140.dll', 'vcruntime140_1.dll')) {
         if (-not (Test-Path (Join-Path $stage $name))) { throw "Missing standalone VC++ runtime: $name" }
     }
-    foreach ($name in @('Install-RobloxManager.ps1', 'Cai-Roblox-Manager.cmd', 'Kiem-tra-Roblox-Manager.cmd')) {
+    foreach ($name in @('Install-RobloxManager.ps1', 'Cai-Roblox-Manager.cmd', 'Kiem-tra-Roblox-Manager.cmd', 'Kiem-tra-Browser.cmd')) {
         Copy-Item (Join-Path $root "installer\$name") $stage
     }
     Copy-Item (Join-Path $root 'STANDALONE.vi.md') (Join-Path $stage 'HUONG-DAN.md')

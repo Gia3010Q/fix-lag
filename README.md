@@ -4,9 +4,9 @@ Phiên bản Roblox Manager chạy độc lập, có thư mục dữ liệu và 
 
 ## Tải bản test
 
-**[Tải gói Windows x64 — ZIP khoảng 123 MB](https://github.com/Gia3010Q/fix-lag/releases/download/v3.7.2.3-roblox-manager-test/Roblox-Manager-3.7.2.3-win-x64.zip)**
+**[Tải gói Windows x64 — ZIP khoảng 123 MB](https://github.com/Gia3010Q/fix-lag/releases/download/v3.7.2.4-roblox-manager-test/Roblox-Manager-3.7.2.4-win-x64.zip)**
 
-[Trang Pre-release và mã nguồn tương ứng](https://github.com/Gia3010Q/fix-lag/releases/tag/v3.7.2.3-roblox-manager-test)
+[Trang Pre-release và mã nguồn tương ứng](https://github.com/Gia3010Q/fix-lag/releases/tag/v3.7.2.4-roblox-manager-test)
 
 1. Giải nén **toàn bộ** ZIP vào một thư mục riêng.
 2. Mở `RobloxManager.exe` để thử ngay, hoặc `Cai-Roblox-Manager.cmd` để copy vào `%LOCALAPPDATA%\Programs\RobloxManager` và tạo shortcut Start Menu.
@@ -28,4 +28,10 @@ Frontend: `upstream-ram-372/RBX Alt Manager`. Backend tối ưu: `upstream-ram-3
 
 Nguồn tương ứng cũng được đính kèm trong Assets của Pre-release, cùng các tệp SHA-256. Xem `SOURCE_EXPORT.md` để biết nguồn gốc snapshot.
 
-Tên mới là **Roblox Manager**, phiên bản 3.7.2.3. Giữ hồ sơ `%LOCALAPPDATA%\Mizuauto\Manager` để dùng lại tài khoản/cài đặt của bản standalone trước; không tự nhập từ Roblox Account Manager gốc. Tên DLL và khóa nội bộ được giữ để tương thích.
+Tên mới là **Roblox Manager**, phiên bản 3.7.2.4. Giữ hồ sơ `%LOCALAPPDATA%\Mizuauto\Manager` để dùng lại tài khoản/cài đặt của bản standalone trước; không tự nhập từ Roblox Account Manager gốc. Tên DLL và khóa nội bộ được giữ để tương thích.
+
+## Bản sửa browser/cookie 3.7.2.4
+
+Trình duyệt nhúng dùng đường dẫn CEF tuyệt đối, chờ khởi tạo và gán/xóa cookie xong trước khi mở trang. Nhập cookie dùng API `users.roblox.com/v1/users/authenticated`, nhận giá trị thuần hoặc `.ROBLOSECURITY=...`, chạy nền và báo lỗi cụ thể mà không hiện lại cookie. Không cần mở browser để nhập cookie: **Add → By Cookie**.
+
+[Kiểm tra Windows thực tế](https://github.com/Gia3010Q/fix-lag/actions/runs/44378539636) đã mở cửa sổ browser, dựng trang HTML thử, đổi cookie và kiểm tra nhập tài khoản qua HTTP fixture. Không dùng tài khoản thật; đăng nhập Roblox thật và gameplay chưa được xác nhận.

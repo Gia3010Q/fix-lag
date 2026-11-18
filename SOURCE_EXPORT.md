@@ -7,3 +7,5 @@ A runnable Windows x64 test package is delivered separately from this source arc
 Original GPL-3.0 license is preserved. No real account data, cookies or personal settings are included. Build caches, target directories and staged binaries are excluded from this source ZIP.
 
 The 3.7.2.3 export renames the executable and visible application to Roblox Manager while retaining the standalone profile and internal identity for compatibility. See VERIFICATION.md for the required native Windows release checks.
+
+The 3.7.2.4 source includes explicit CEF startup/session ordering, the current cookie identity endpoint, sanitized asynchronous cookie import, and native Windows browser regression checks. See VERIFICATION.md.

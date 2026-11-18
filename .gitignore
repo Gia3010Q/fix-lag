@@ -13,3 +13,7 @@ state.json
 startup-error.log
 diagnostics-result.txt
 log.txt
+
+browser-checks-result.txt
+browser-error.log
+cef-browser.log

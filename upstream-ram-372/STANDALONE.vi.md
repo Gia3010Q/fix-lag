@@ -1,4 +1,4 @@
-# Roblox Manager 3.7.2.3 — bản test Windows x64
+# Roblox Manager 3.7.2.4 — bản test Windows x64
 
 Đã build EXE C# và DLL Rust mới. Gói test chứa chương trình và thư viện chạy, không phải chỉ có mã nguồn. Cần Windows 10/11 x64 với Microsoft .NET Framework 4.7.2 trở lên (Windows 11 thường đã có 4.8). Không cần Roblox Account Manager, Visual Studio, Rust hoặc Python để dùng gói test.
 
@@ -61,3 +61,14 @@ Giữ giấy phép GPL-3.0 của upstream khi phân phối và cung cấp mã ng
 ## Đổi tên từ bản standalone cũ
 
 Tên hiển thị, EXE, shortcut và thư mục chương trình mới là **Roblox Manager**. Thư mục tài khoản/cài đặt và trạng thái tối ưu vẫn dùng tên Mizuauto để giữ dữ liệu. Đóng bản standalone Mizuauto trước khi mở bản đổi tên. Có thể chạy cùng Roblox Account Manager gốc. Tệp cài chỉ thay shortcut và mục khởi động cùng Windows của bản Mizuauto đã xác nhận đúng appId; không xóa hồ sơ hay thư mục chương trình cũ.
+
+## Sửa lỗi browser và cookie ở 3.7.2.4
+
+- Giải nén **toàn bộ** gói 3.7.2.4 vào thư mục mới, đóng bản trước rồi mở `RobloxManager.exe`. Hồ sơ tài khoản cũ được giữ nguyên. Có thể chạy `Cai-Roblox-Manager.cmd` để cập nhật thư mục chương trình.
+- Nhập cookie trực tiếp qua **Add → By Cookie** (hoặc menu Add Accounts → By Cookie). Chấp nhận giá trị `.ROBLOSECURITY` hoặc `.ROBLOSECURITY=giá_trị`; mỗi dòng một tài khoản. Không cần mở browser trước. Kết quả chỉ ghi tên tài khoản hoặc lỗi, không hiện lại cookie.
+- Nhấn Add thông thường để đăng nhập trong cửa sổ browser. Nhấp phải tài khoản → Open Browser để mở phiên đã lưu. Browser chờ khởi tạo và cookie được gán hoàn tất trước khi tải trang.
+- Nếu đã tự chọn Chromium thay vì CEF trong Settings, bật lại **Use CefSharp Browser** rồi khởi động lại để dùng browser nhúng đã được kiểm tra trong bản này.
+- Lỗi browser ghi ở `%LOCALAPPDATA%\Mizuauto\Manager\browser-error.log`; thông tin khởi tạo CEF ở `cef-browser.log`. Không gửi cookie hoặc AccountData.json.
+- `Kiem-tra-Browser.cmd` mở browser kiểm tra với cookie giả và HTTP fixture, không đọc dữ liệu tài khoản đã lưu. Kết quả ở `browser-checks-result.txt`. Browser test có thể mở trang đăng nhập Roblox trống ở bước cuối rồi đóng.
+
+Windows runner đã xác nhận cửa sổ browser thực tế tải HTML và chạy JavaScript, gán/đổi cookie, xóa phiên cũ khi chọn đăng nhập, và luồng tạo Account với API mới/HTTP lỗi/dữ liệu giả. Chưa dùng tài khoản hoặc cookie thật để xác nhận đăng nhập Roblox.
